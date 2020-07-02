@@ -50,7 +50,7 @@ public class Alchemy : Node2D
             newItemButton.Normal = i.IconTex;
             Control buttonControl = new Control();
             buttonControl.AddChild(newItemButton);
-            buttonControl.RectMinSize = new Vector2(16f, 16f);
+            buttonControl.RectMinSize = new Vector2(32f, 32f);
             _reagentBox.AddChild(buttonControl);
             newItemButton.Alchemy = this;
             newItemButton.Item = i;

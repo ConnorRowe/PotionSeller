@@ -12,8 +12,9 @@ public class ItemButton : TouchScreenButton
     public override void _Ready()
     {
         var rectangle = new RectangleShape2D();
-        rectangle.Extents = new Vector2(16f, 16f);
+        rectangle.Extents = new Vector2(8f, 8f);
         Shape = rectangle;
+        Scale = new Vector2(2f, 2f);
         Connect("released", this, nameof(ButtonReleased));
     }
 
