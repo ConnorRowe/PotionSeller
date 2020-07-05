@@ -16,7 +16,7 @@ public class Mortar : StaticBody2D
         _pestle = GetParent().GetNode<Pestle>("Pestle");
         _pestle.Connect("body_entered", this, nameof(_OnPestleBodyEntered));
 
-        _potionCircle = GetParent().GetNode<PotionCircle>("PotionCircle");
+        _potionCircle = GetParent().GetNode<PotionCircle>("Crush/PotionCircle");
     }
 
     public void _OnPestleBodyEntered(Node body)

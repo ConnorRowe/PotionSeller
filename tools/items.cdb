@@ -30,6 +30,10 @@
 				{
 					"typeStr": "7",
 					"name": "img"
+				},
+				{
+					"typeStr": "1",
+					"name": "description"
 				}
 			],
 			"lines": [
@@ -58,7 +62,8 @@
 						}
 					],
 					"potion_colour": "LightPink",
-					"img": "ddfa0281c4ef3ba6eca3a52d7b599094"
+					"img": "ddfa0281c4ef3ba6eca3a52d7b599094",
+					"description": "A very distinctive mushroom; its bright red cap with white warts inspired early alchemists to brew potions inciting a magical strength."
 				},
 				{
 					"name": "Orpiment",
@@ -66,7 +71,8 @@
 					"rarity": 2,
 					"potion_colour": "Orange",
 					"Effects": [],
-					"img": "17dd01bfb42e075b05a059111389833e"
+					"img": "17dd01bfb42e075b05a059111389833e",
+					"description": ""
 				},
 				{
 					"name": "Holly Berries",
@@ -74,7 +80,8 @@
 					"rarity": 0,
 					"potion_colour": "IndianRed",
 					"Effects": [],
-					"img": "1804adde692964e511a23d4de6a692b9"
+					"img": "1804adde692964e511a23d4de6a692b9",
+					"description": ""
 				},
 				{
 					"name": "Brimstone",
@@ -82,7 +89,8 @@
 					"rarity": 0,
 					"potion_colour": "LightGoldenrod",
 					"Effects": [],
-					"img": "114d086be977570d0a998f47ae9372fe"
+					"img": "114d086be977570d0a998f47ae9372fe",
+					"description": ""
 				},
 				{
 					"name": "Aqua Fortis",
@@ -90,7 +98,8 @@
 					"rarity": 1,
 					"potion_colour": "PaleGoldenrod",
 					"Effects": [],
-					"img": "a53d8b943fb8b692e75a4a2d238152be"
+					"img": "a53d8b943fb8b692e75a4a2d238152be",
+					"description": ""
 				},
 				{
 					"name": "Aqua Vitae",
@@ -98,7 +107,8 @@
 					"rarity": 0,
 					"potion_colour": "Snow",
 					"Effects": [],
-					"img": "d7211b79625790a61f138dd80a9b14c2"
+					"img": "d7211b79625790a61f138dd80a9b14c2",
+					"description": ""
 				},
 				{
 					"name": "Elderberries",
@@ -106,7 +116,17 @@
 					"rarity": 0,
 					"potion_colour": "RebeccaPurple",
 					"Effects": [],
-					"img": "413a348931acfa173bd9bbf0ae18961c"
+					"img": "413a348931acfa173bd9bbf0ae18961c",
+					"description": ""
+				},
+				{
+					"name": "Veiled Stinkhorn Gleba",
+					"type": 0,
+					"rarity": 0,
+					"potion_colour": "",
+					"Effects": [],
+					"img": "",
+					"description": "Invisibility"
 				}
 			],
 			"separators": [],

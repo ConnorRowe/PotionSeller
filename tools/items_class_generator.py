@@ -37,16 +37,18 @@ def main():
         "using Godot;\nusing System;\n\npublic class Items : Reference\n{\n\t// Items\n")
     itemList = data['sheets'][0]['lines']
 
+    # write all the items as static members
     for item in itemList:
         fileOut.write("\tpublic static Item " + item['name'].upper().replace(' ', '_') + " = new Item(\"" +
                       item['name'] + "\", " + getItemType(item['type']) + ", " + getItemRarity(item['rarity']) + ", \"" + item['name'].lower().replace(' ', '_') +
-                      "\", " + "Colors." + item['potion_colour'] + ");\n")
+                      "\", " + "Colors." + item['potion_colour'] + ", \"" + item['description'] + "\");\n")
 
     f.close()
 
     # close class
     fileOut.write("\n}\n")
 
+    # close the file and open it up in an external text editor
     fileOut.close()
     os.startfile(outputPath)
 

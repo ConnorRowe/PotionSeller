@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Mortar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Pestle.tscn" type="PackedScene" id=2]
@@ -6,19 +6,98 @@
 [ext_resource path="res://textures/Progress_bar_bg.png" type="Texture" id=4]
 [ext_resource path="res://textures/Progress_bar_fill.png" type="Texture" id=5]
 [ext_resource path="res://Alchemy.cs" type="Script" id=6]
-[ext_resource path="res://font/coders_crux.tres" type="DynamicFont" id=7]
+[ext_resource path="res://PotionSeller.theme" type="Theme" id=7]
+[ext_resource path="res://textures/helpbutton.png" type="Texture" id=8]
+[ext_resource path="res://textures/pestle_holder.png" type="Texture" id=9]
+[ext_resource path="res://font/small_font.tres" type="DynamicFont" id=10]
 
 [node name="AlchemyRoot" type="Node2D"]
 script = ExtResource( 6 )
 
-[node name="Pestle" parent="." instance=ExtResource( 2 )]
-position = Vector2( 179.353, 93.0341 )
-can_sleep = false
+[node name="HelpDialog" type="AcceptDialog" parent="."]
+margin_left = 150.394
+margin_top = 56.8116
+margin_right = 317.394
+margin_bottom = 135.812
+theme = ExtResource( 7 )
+popup_exclusive = true
+window_title = "Help"
+dialog_text = "Select your reagents!"
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Mortar" parent="." instance=ExtResource( 1 )]
-position = Vector2( 159.151, 183.518 )
+[node name="HelpButton" type="TouchScreenButton" parent="."]
+position = Vector2( 8, 8 )
+normal = ExtResource( 8 )
 
-[node name="PotionProgress" type="TextureProgress" parent="."]
+[node name="MortarPestle" type="Node2D" parent="."]
+
+[node name="PickReagents" type="Node2D" parent="MortarPestle"]
+
+[node name="InventoryBox" type="HBoxContainer" parent="MortarPestle/PickReagents"]
+margin_left = 319.0
+margin_top = 13.0
+margin_right = 434.0
+margin_bottom = 53.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SelectReagents" type="Label" parent="MortarPestle/PickReagents"]
+margin_left = 320.0
+margin_top = 4.0
+margin_right = 435.0
+margin_bottom = 18.0
+theme = ExtResource( 7 )
+text = "Select Reagents:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PotionReagents" type="Label" parent="MortarPestle/PickReagents"]
+margin_left = 104.0
+margin_top = 9.0
+margin_right = 219.0
+margin_bottom = 23.0
+theme = ExtResource( 7 )
+text = "Potion Reagents:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PotionReagentsBox" type="VBoxContainer" parent="MortarPestle/PickReagents"]
+margin_left = 92.0
+margin_top = 23.0
+margin_right = 225.0
+margin_bottom = 51.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProceedToCrush" type="Button" parent="MortarPestle/PickReagents"]
+margin_left = 120.844
+margin_top = 102.61
+margin_right = 200.844
+margin_bottom = 142.61
+theme = ExtResource( 7 )
+custom_fonts/font = ExtResource( 10 )
+disabled = true
+shortcut_in_tooltip = false
+text = "Proceed"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crush" type="Node2D" parent="MortarPestle"]
+visible = false
+
+[node name="PotionProgress" type="TextureProgress" parent="MortarPestle/Crush"]
 margin_left = 63.0
 margin_top = 62.0
 margin_right = 72.0
@@ -32,25 +111,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PotionCircle" parent="." instance=ExtResource( 3 )]
+[node name="PotionCircle" parent="MortarPestle/Crush" instance=ExtResource( 3 )]
 
-[node name="ReagentsBox" type="HBoxContainer" parent="."]
-margin_left = 271.0
-margin_top = 13.0
-margin_right = 386.0
-margin_bottom = 53.0
-custom_constants/separation = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Pestle" parent="MortarPestle" instance=ExtResource( 2 )]
+position = Vector2( 38, 165 )
+z_index = -2
+can_sleep = false
 
-[node name="Label" type="Label" parent="."]
-margin_left = 32.9092
-margin_top = 32.1158
-margin_right = 72.9092
-margin_bottom = 46.1158
-custom_fonts/font = ExtResource( 7 )
-text = "benis"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Mortar" parent="MortarPestle" instance=ExtResource( 1 )]
+position = Vector2( 159.151, 183.518 )
+z_index = -1
+
+[node name="StaticColliders" type="StaticBody2D" parent="MortarPestle"]
+position = Vector2( 38, 212 )
+
+[node name="PestleHolder" type="Sprite" parent="MortarPestle/StaticColliders"]
+texture = ExtResource( 9 )
+
+[node name="PestleHolderCollider" type="CollisionPolygon2D" parent="MortarPestle/StaticColliders"]
+polygon = PoolVector2Array( -23, 12, -24, 8.99998, -19, -12, -18, -12, -17, -9.00002, -11, -3.00002, -6, -1.52588e-05, -3, 0.999985, 3, 0.999986, 6, -1.52588e-05, 11, -3.00001, 17, -9.00002, 18, -12, 19, -12, 24, 8.99998, 23, 12 )
+
+[node name="Table" type="CollisionPolygon2D" parent="MortarPestle/StaticColliders"]
+polygon = PoolVector2Array( -38, -268, -38, 12, 410, 12, 410, -268, 418, -268, 418, 20, -46, 20, -46, -268 )
