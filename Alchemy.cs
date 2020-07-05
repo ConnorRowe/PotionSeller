@@ -17,9 +17,18 @@ public class Alchemy : Node2D
         Crush
     }
 
+    private enum ReagentAnim
+    {
+        Fade,
+        Hover,
+        Fall,
+        End
+    }
+
     // State machines
     private AlchemyStage _alchemyStage = AlchemyStage.MortarPestle;
     private MortarPestleStage _mortarPestleStage = MortarPestleStage.PickReagents;
+    private ReagentAnim _reagentAnimState = ReagentAnim.Fade;
 
     // Nodes
     private Mortar _mortar;
@@ -28,10 +37,12 @@ public class Alchemy : Node2D
     private VBoxContainer _potionReagentsBox;
     private AcceptDialog _helpDialog;
     private Button _proceedToCrush;
+    private Tween _tween;
 
     // Lists
     private System.Collections.Generic.List<Item> _itemList = new System.Collections.Generic.List<Item>();
     private System.Collections.Generic.List<Item> _potionReagents = new System.Collections.Generic.List<Item>();
+    private Sprite[] _reagentAnimSprites = new Sprite[4];
 
     // Assets
     private Texture _itemBtnBg;
@@ -40,6 +51,8 @@ public class Alchemy : Node2D
 
     public override void _Ready()
     {
+        GD.Randomize();
+
         // Get references to all the nodes we need to manipulate
         _mortar = GetNode<Mortar>("MortarPestle/Mortar");
         _potionCircle = GetNode<PotionCircle>("MortarPestle/Crush/PotionCircle");
@@ -48,6 +61,7 @@ public class Alchemy : Node2D
         _mortar.Alchemy = this;
         _helpDialog = GetNode<AcceptDialog>("HelpDialog");
         _proceedToCrush = GetNode<Button>("MortarPestle/PickReagents/ProceedToCrush");
+        _tween = GetNode<Tween>("MortarPestle/PickReagents/Tween");
 
         // Load assets needed
         _itemBtnBg = GD.Load<Texture>("res://textures/item_slot.png");
@@ -56,7 +70,8 @@ public class Alchemy : Node2D
 
         // Signal connections
         GetNode<TouchScreenButton>("HelpButton").Connect("released", this, nameof(DisplayHelpPopup));
-        _proceedToCrush.Connect("pressed", this, nameof(NextStage));
+        _proceedToCrush.Connect("pressed", this, nameof(ProceedToCrushPressed));
+        _tween.Connect("tween_all_completed", this, nameof(ReagentFadeTweenCompleted));
 
         // Adding items to simulate an inventory
         _itemList.Add(Items.FLY_AGARIC);
@@ -202,6 +217,81 @@ public class Alchemy : Node2D
                     }
                     break;
                 }
+        }
+    }
+
+    public void ProceedToCrushPressed()
+    {
+        for (int i = 0; i < _potionReagentsBox.GetChildCount(); i++)
+        {
+            //ItemSprite
+            Node2D N = ((Node)_potionReagentsBox.GetChildren()[i]).GetChild(0).GetChild(0) as Node2D;
+
+            _tween.InterpolateProperty(GetNode("MortarPestle/PickReagents"), "modulate", Colors.White, new Color(1f, 1f, 1f, 0f), .5f);
+            _tween.InterpolateProperty(_proceedToCrush, "modulate", Colors.White, new Color(1f, 1f, 1f, 0f), .5f);
+
+            Sprite reagentSprite = new Sprite()
+            {
+                Texture = _potionReagents[i].IconTex,
+                GlobalPosition = N.GlobalPosition + new Vector2(2f, 2f),
+                Centered = false,
+                ZIndex = -2
+
+            };
+            AddChild(reagentSprite);
+            _reagentAnimSprites[i] = reagentSprite;
+
+        }
+        _tween.Start();
+        _reagentAnimState = ReagentAnim.Hover;
+    }
+
+    public void ReagentFadeTweenCompleted()
+    {
+        if (_reagentAnimState == ReagentAnim.Hover)
+        {
+            _proceedToCrush.Disabled = true;
+
+            foreach (Node N in _potionReagentsBox.GetChildren())
+            {
+                N.QueueFree();
+            }
+
+            foreach (Sprite S in _reagentAnimSprites)
+            {
+                if (S != null)
+                {
+                    _tween.InterpolateProperty(S, "global_position", S.GlobalPosition, new Vector2(160f + (float)GD.RandRange(-10, 10), 40f + (float)GD.RandRange(-10, 10)), 1f, Tween.TransitionType.Cubic);
+                }
+            }
+
+            _tween.Start();
+            _reagentAnimState = ReagentAnim.Fall;
+        }
+        else if (_reagentAnimState == ReagentAnim.Fall)
+        {
+            foreach (Sprite S in _reagentAnimSprites)
+            {
+                if (S != null)
+                {
+                    _tween.InterpolateProperty(S, "global_position", S.GlobalPosition, _mortar.GlobalPosition + new Vector2((float)GD.RandRange(-10, 10), (float)GD.RandRange(-10, 10)), 1.5f, Tween.TransitionType.Cubic);
+                }
+            }
+
+            _tween.Start();
+            _reagentAnimState = ReagentAnim.End;
+        }
+        else if (_reagentAnimState == ReagentAnim.End)
+        {
+            NextStage();
+            for (int i = 0; i < _reagentAnimSprites.Length; i++)
+            {
+                if (_reagentAnimSprites[i] != null)
+                {
+                    _reagentAnimSprites[i].QueueFree();
+                    _reagentAnimSprites[i] = null;
+                }
+            }
         }
     }
 }
