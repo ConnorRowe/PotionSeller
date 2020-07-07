@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Player : Area2D
+public class Player : KinematicBody2D
 {
     public enum Direction
     {
@@ -12,9 +12,12 @@ public class Player : Area2D
     }
 
     private JoystickButton _joystick = null;
-    private const float _moveSpeed = 50f;
     private AnimatedSprite _playerSprite = null;
     private Direction _playerDirection = Direction.Right;
+
+    private const float _MaxSpeed = 100f;
+    private const float _Acceleration = 1000f;
+    private Vector2 _motion = Vector2.Zero;
 
     public Direction PlayerDirection
     {
@@ -29,35 +32,43 @@ public class Player : Area2D
         }
     }
 
-
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         _joystick = GetParent().GetNodeOrNull("CanvasLayer").GetChild(0).GetChild<JoystickButton>(0);
         _playerSprite = GetNode<AnimatedSprite>("AnimatedSprite");
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(float delta)
+    public override void _PhysicsProcess(float delta)
     {
         Vector2 axis = _joystick.GetValue().Normalized();
 
-        if (axis.Length() > 0f)
+        if (axis == Vector2.Zero)
         {
-            bool vertical = Mathf.Abs(axis.y) > Mathf.Abs(axis.x);
-            bool positive = Mathf.Sign(vertical ? axis.y : axis.x) > 0f;
+            // Not moving
+            ApplyFriction(_Acceleration * delta);
+        }
+        else
+        {
+            //Moving
+            ApplyMovement(axis * _Acceleration * delta);
+        }
+
+        _motion = MoveAndSlide(_motion);
+
+        if (_motion.Length() > 0f)
+        {
+            bool vertical = Mathf.Abs(_motion.y) > Mathf.Abs(_motion.x);
+            bool positive = Mathf.Sign(vertical ? _motion.y : _motion.x) > 0f;
 
             PlayerDirection = vertical ? (positive ? Direction.Down : Direction.Up) : (positive ? Direction.Right : Direction.Left);
-
             _playerSprite.SpeedScale = 1.0f;
         }
         else
         {
             _playerSprite.SpeedScale = 0.0f;
             _playerSprite.Frame = 0;
-        }
 
-        Position += axis * _moveSpeed * delta;
+        }
     }
 
     private void DirectionUpdated()
@@ -80,6 +91,27 @@ public class Player : Area2D
                 _playerSprite.Animation = "run_away";
                 _playerSprite.FlipH = false;
                 break;
+        }
+    }
+
+    private void ApplyFriction(float amount)
+    {
+        if (_motion.Length() > amount)
+        {
+            _motion -= _motion.Normalized() * amount;
+        }
+        else
+        {
+            _motion = Vector2.Zero;
+        }
+    }
+
+    private void ApplyMovement(Vector2 amount)
+    {
+        _motion += amount;
+        if (_motion.Length() > _MaxSpeed)
+        {
+            _motion = _motion.Clamped(_MaxSpeed);
         }
     }
 }

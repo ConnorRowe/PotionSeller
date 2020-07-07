@@ -1,14 +1,20 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://sprite_frames/Player_spr_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Player.cs" type="Script" id=2]
 [ext_resource path="res://textures/Shadow.png" type="Texture" id=3]
+[ext_resource path="res://textures/light_96.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 7.5 )
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 0, 8 )
+texture = ExtResource( 4 )
+shadow_enabled = true
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0.686275 )
@@ -18,7 +24,7 @@ offset = Vector2( 0, 14 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "run_away"
-frame = 5
+frame = 4
 playing = true
 
 [node name="Collider" type="CollisionShape2D" parent="."]
