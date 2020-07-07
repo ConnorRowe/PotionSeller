@@ -1,34 +1,36 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://sprite_frames/Player_spr_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Player.cs" type="Script" id=2]
 [ext_resource path="res://textures/Shadow.png" type="Texture" id=3]
 [ext_resource path="res://textures/light_96.png" type="Texture" id=4]
+[ext_resource path="res://textures/normal/Player_run_backwards_n.png" type="Texture" id=5]
+[ext_resource path="res://textures/Player_run_backwards.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 7.5 )
+extents = Vector2( 6, 4 )
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 0, 8 )
+position = Vector2( 0, 11 )
 texture = ExtResource( 4 )
+color = Color( 1, 0.670588, 0.52549, 1 )
+energy = 0.74
 shadow_enabled = true
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Shadow" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0.686275 )
 texture = ExtResource( 3 )
 offset = Vector2( 0, 14 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = ExtResource( 1 )
-animation = "run_away"
-frame = 4
-playing = true
+[node name="PlayerSprite" type="Sprite" parent="."]
+texture = ExtResource( 6 )
+normal_map = ExtResource( 5 )
+hframes = 8
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 7.5 )
+position = Vector2( 0, 11 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -37,3 +39,6 @@ limit_left = 0
 limit_top = 0
 limit_right = 1600
 limit_bottom = 1600
+
+[node name="SpriteAnimateTimer" type="Timer" parent="."]
+autostart = true
