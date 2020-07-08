@@ -6,6 +6,9 @@
    <object id="6" name="occluder" type="occluder" x="0" y="0">
     <polygon points="0,0 16,0 16,16 0,16"/>
    </object>
+   <object id="8" name="area" type="area" x="0" y="0">
+    <polygon points="0,0 16,0 16,16 0,16"/>
+   </object>
   </objectgroup>
  </tile>
 </tileset>
