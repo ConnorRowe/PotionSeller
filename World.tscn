@@ -5,29 +5,28 @@
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Joystick.tscn" type="PackedScene" id=4]
 
-[node name="testlevel" instance=ExtResource( 1 )]
+[node name="Node2D" type="Node2D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="1"]
+[node name="testlevel" parent="." instance=ExtResource( 1 )]
 
-[node name="Joystick" parent="CanvasLayer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 50, 180 )
+[node name="Darken" type="CanvasModulate" parent="."]
+color = Color( 0.219608, 0.219608, 0.219608, 1 )
 
-[node name="Player" parent="." index="2" instance=ExtResource( 3 )]
-position = Vector2( 106.434, 61.2442 )
-
-[node name="DarkenScene" type="CanvasModulate" parent="." index="3"]
-color = Color( 0.203922, 0.203922, 0.203922, 1 )
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Light2D" type="Light2D" parent="." index="4"]
-position = Vector2( 291.967, 110.466 )
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 240.655, 170.001 )
 texture = ExtResource( 2 )
-texture_scale = 3.36
-color = Color( 0.7, 0, 1, 1 )
-range_height = 62.3
+texture_scale = 2.0
+energy = 0.7
+range_height = 50.0
 shadow_enabled = true
-__meta__ = {
-"_editor_description_": ""
-}
+shadow_gradient_length = 0.5
+shadow_filter = 1
+shadow_filter_smooth = 4.0
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 87.9965, 64.0534 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Joystick" parent="CanvasLayer" instance=ExtResource( 4 )]
+position = Vector2( 64.5805, 174.519 )

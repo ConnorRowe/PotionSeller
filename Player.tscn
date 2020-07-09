@@ -13,6 +13,7 @@ extents = Vector2( 6, 4 )
 script = ExtResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="."]
+visible = false
 position = Vector2( 0, 11 )
 texture = ExtResource( 4 )
 texture_scale = 2.0
