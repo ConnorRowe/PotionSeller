@@ -1,0 +1,17 @@
+[remap]
+
+importer="texture_atlas"
+type="Texture"
+path="res://.import/terrain_sheet_n6.png-3f463f611bc23302dfe662863a175113.res"
+group_file="res://textures/terrain_normal/terrain_normal_atlas.png"
+valid=true
+[deps]
+
+
+source_file="res://textures/terrain_normal/terrain_sheet_n6.png"
+dest_files=[ "res://.import/terrain_sheet_n6.png-3f463f611bc23302dfe662863a175113.res" ]
+
+[params]
+
+atlas_file="res://textures/terrain_normal/terrain_normal_atlas.png"
+import_mode=0

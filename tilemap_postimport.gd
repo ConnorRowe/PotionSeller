@@ -6,7 +6,7 @@ func post_import(scene):
 		
 		var i = 1
 		for tile in layer_tile_set.get_tiles_ids():
-			var loadedTex = load("res://textures/normal/terrain/terrain_sheet_n" + String(i) + ".png")
+			var loadedTex = load("res://textures/terrain_normal/terrain_sheet_n" + String(i) + ".png")
 			layer_tile_set.tile_set_normal_map(tile,loadedTex)
 			i += 1
 

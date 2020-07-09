@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" source="Terrain.tsx"/>
+ <tileset firstgid="1" source="SeparateTileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3a63KCMBCGYSo9qG0dLfX+b7VkSmbWbciGEGybvD+e8QSo+7EBoseu646ZhhXrOp8r12/B2hqjTuwXaXVxj/U4k1O7qyCfC21rMN6r1uy2+l5z2621jqWl7P9zx2JqX55VOz3OhLyN3oXT6DKZ26a8jX0Gsp3PIlSbj9FDxDmQi87Di2XYupS+sLKYy0Ue333Gr2rZ3/7+91Ti2kzWb4lDYrZ6udbGrVBG10h2Oo+9uH818hjU+4ayncutdrnnSLn94cYif/w/Rbbl82itL1KEeiQ3j1A+cqzyfdZif/g65+6Dj0at98brKceZlvsj5zhvZbI2D3xbsl/2kVx2mZn5PFqYp99qDHgavUy3z9P92GuxnFodr7b+vtb2ZSbyeMN4dTtXEZu3CI0huu5Llgn1Set5+PPXw3R/X6gmKf2nz513C9evkeuHXjzuu3Vze0vm6HUe9MbttbO7bvbXaKVrszaPms+3ZG3cGK6v33aFtm09H5tLbHW8cvy5qD5XLZW5pPuQ8SqvjrFl9Tr+9yX5++FcBiV68r+zxuLcsfpi1JwsbKXG6dx5X51Fzcfte9PzWdY8L32xvVifuPr7+Sx5zWP9Fw7LyTr23c9ztn7j90c4ixQl/ouKctkMZPCn8wHZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQmy+oYgpSQJwAAA==
+   H4sIAAAAAAAACu3ZXW+CMBgGUDZ2oduF26L//69qE4ldbQvG0E49FychQhT78PaL/TAMewCKDpFt9Fnv+wKey9TP1K75qeh9/89kSRa/J28V3zfkIsP7s9jN5LE0l6/k2t7//9HE7VfyfvKRfLYtfF9aZ6XrWJbHJjo+DJfnfEk757KVx315LDX1W/FYIY9+eeTyiWtoqjN53C4dG1KbmfM18lgnE3m0N1Zyyc2x5NEul1TtXC0nefQRZxKPN/L4u35uuW+Rq5NXzyPMX3fndgjH4Vn9bPjb6ZjTuz16Cu0e6mGMMhiHdjWS5qE2rtfO0xqtRdvI41row9P1W6t+w15iXmmuuoa0DuWxvtI7w9o7rFcfy9fKYe69oSzamNv3Lb1PlMV60r2QuX1eWbRRa/9W8wYucnuI2h8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD/OQK/t77pQJwAAA==
   </data>
  </layer>
 </map>
