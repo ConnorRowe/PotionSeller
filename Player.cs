@@ -15,6 +15,7 @@ public class Player : KinematicBody2D
     private JoystickButton _joystick = null;
     private Direction _playerDirection = Direction.Right;
     private Sprite _playerSprite;
+    private Inventory _inventory;
 
     // Assets
     private Texture _runForwards;
@@ -30,6 +31,8 @@ public class Player : KinematicBody2D
     private Vector2 _motion = Vector2.Zero;
     private const float _SpriteFPS = 8f;
     private bool _playerIsMoving = false;
+
+    private System.Collections.Generic.List<Item.ItemStack> _invItems = new System.Collections.Generic.List<Item.ItemStack>();
 
     public Direction PlayerDirection
     {
@@ -47,8 +50,9 @@ public class Player : KinematicBody2D
     public override void _Ready()
     {
         // Get nodes
-        _joystick = GetParent().GetNodeOrNull("CanvasLayer").GetChild(0).GetChild<JoystickButton>(0);
+        _joystick = GetParent().GetNode("CanvasLayer/Joystick").GetChild<JoystickButton>(0);
         _playerSprite = GetNode<Sprite>("PlayerSprite");
+        _inventory = GetParent().GetNode<Inventory>("CanvasLayer/Inventory");
 
         // Load assets
         _runForwards = GD.Load<Texture>("res://textures/Player_run_forwards.png");
@@ -61,6 +65,9 @@ public class Player : KinematicBody2D
         Timer spriteAnimTimer = GetNode<Timer>("SpriteAnimateTimer");
         spriteAnimTimer.WaitTime = 1f / _SpriteFPS;
         spriteAnimTimer.Connect("timeout", this, nameof(AnimateSprite));
+
+        _invItems.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5) });
+        GetParent().GetNode<Inventory>("CanvasLayer/Inventory").UpdateSlots(_invItems);
     }
 
     public override void _PhysicsProcess(float delta)
@@ -92,6 +99,19 @@ public class Player : KinematicBody2D
         {
             _playerIsMoving = false;
             _playerSprite.Frame = 0;
+        }
+    }
+
+    //For testing only
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed)
+        {
+            if ((KeyList)keyEvent.Scancode == KeyList.T)
+            {
+                PickupItem(new Item.ItemStack(Items.ORPIMENT, 1));
+                _inventory.Update();
+            }
         }
     }
 
@@ -153,5 +173,21 @@ public class Player : KinematicBody2D
                 i = 0;
             _playerSprite.Frame = i;
         }
+    }
+
+    private void PickupItem(Item.ItemStack itemStack)
+    {
+        for (int i = 0; i < _invItems.Count; i++)
+        {
+            if (_invItems[i].item == itemStack.item)
+            {
+                _invItems[i] = new Item.ItemStack(itemStack.item, _invItems[i].stackCount + itemStack.stackCount);
+                _inventory.Update();
+                return;
+            }
+        }
+
+        _invItems.Add(itemStack);
+        _inventory.Update();
     }
 }

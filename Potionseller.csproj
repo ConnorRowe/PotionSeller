@@ -53,8 +53,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inventory.cs" />
     <Compile Include="JoystickButton.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Items.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

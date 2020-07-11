@@ -18,6 +18,18 @@ public class Item : Reference
         Legendary
     }
 
+    public struct ItemStack
+    {
+        public Item item;
+        public int stackCount;
+
+        public ItemStack(Item item, int stackCount)
+        {
+            this.item = item;
+            this.stackCount = stackCount;
+        }
+    }
+
     private readonly string _name;
     private readonly ItemType _itemType;
     private readonly Rarity _rarity;
