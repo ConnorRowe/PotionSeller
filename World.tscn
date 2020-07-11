@@ -33,5 +33,7 @@ position = Vector2( 87.9965, 64.0534 )
 position = Vector2( 64.5805, 174.519 )
 
 [node name="Inventory" parent="CanvasLayer" instance=ExtResource( 5 )]
-margin_left = 2.0
-margin_top = 2.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 4.0
+margin_top = 4.0

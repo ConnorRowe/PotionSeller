@@ -28,6 +28,11 @@ public class Item : Reference
             this.item = item;
             this.stackCount = stackCount;
         }
+
+        public override string ToString()
+        {
+            return item.Name + ", " + stackCount.ToString();
+        }
     }
 
     private readonly string _name;
