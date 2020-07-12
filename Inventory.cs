@@ -5,9 +5,11 @@ public class Inventory : Control
 {
     private int _columns = 8;
     private int _rows = 1;
+    private int _selectedItemId = -1;
     private Vector2 itemTexOffset = new Vector2(2f, 2f);
 
     Texture _itemSlot;
+    Texture _itemSlotHighlight;
     Texture _slotEnd;
     DynamicFont _smallFont;
 
@@ -16,6 +18,7 @@ public class Inventory : Control
     public override void _Ready()
     {
         _itemSlot = GD.Load<Texture>("res://textures/item_slot.png");
+        _itemSlotHighlight = GD.Load<Texture>("res://textures/item_slot_highlight.png");
         _smallFont = GD.Load<DynamicFont>("res://font/small_font.tres");
     }
 
@@ -37,11 +40,15 @@ public class Inventory : Control
 
                     if (itemId < _itemStacks.Count)
                     {
+                        if (itemId == _selectedItemId)
+                            DrawTexture(_itemSlotHighlight, texPos, Item.GetRarityColour(_itemStacks[itemId].item));
+
                         DrawTexture(_itemStacks[itemId].item.IconTex, texPos + itemTexOffset);
                         string stackCount = _itemStacks[itemId].stackCount.ToString();
                         float characterOffset = 4.1f * (stackCount.Length - 1);
                         DrawString(_smallFont, texPos + new Vector2(14.5f - characterOffset, 16.5f), stackCount, Colors.DarkSlateGray);
                         DrawString(_smallFont, texPos + new Vector2(14f - characterOffset, 16f), stackCount);
+
                         itemId++;
                     }
                 }
@@ -60,10 +67,15 @@ public class Inventory : Control
                 int y = Mathf.FloorToInt((eventScreenTouch.Position.y - MarginTop) / _itemSlot.GetHeight());
                 int itemId = x + (y * _columns);
 
-                if(itemId < _itemStacks.Count)
+                if (itemId < _itemStacks.Count)
                 {
                     GD.Print("Item overlap: " + _itemStacks[itemId].ToString());
+                    SelectSlot(itemId);
                 }
+            }
+            else
+            {
+                SelectSlot(-1);
             }
         }
     }
@@ -71,6 +83,13 @@ public class Inventory : Control
     public void UpdateSlots(System.Collections.Generic.List<Item.ItemStack> itemStackList)
     {
         _itemStacks = itemStackList;
+
+        Update();
+    }
+
+    public void SelectSlot(int itemId)
+    {
+        _selectedItemId = itemId;
 
         Update();
     }

@@ -18,6 +18,11 @@ public class Item : Reference
         Legendary
     }
 
+    public static Color CommonColour = Colors.LightSlateGray;
+    public static Color UncommonColour = Colors.Chartreuse;
+    public static Color RareColour = Colors.MediumBlue;
+    public static Color LegendaryColour = Colors.DarkOrange;
+
     public struct ItemStack
     {
         public Item item;
@@ -58,5 +63,21 @@ public class Item : Reference
         _iconTex = GD.Load<Texture>("res://textures/" + iconTexFileName + ".png");
         _potionColour = potionColour;
         _description = description;
+    }
+
+    public static Color GetRarityColour(Item item)
+    {
+        switch (item.ItemRarity)
+        {
+            case Rarity.Common:
+                return CommonColour;
+            case Rarity.Uncommon:
+                return UncommonColour;
+            case Rarity.Rare:
+                return RareColour;
+            case Rarity.Legendary:
+                return LegendaryColour;
+        }
+        return Colors.Magenta;
     }
 }
