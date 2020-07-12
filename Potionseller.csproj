@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Inventory.cs" />
     <Compile Include="JoystickButton.cs" />
+    <Compile Include="LightFollower.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Items.cs" />
