@@ -53,6 +53,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugOverlay.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="JoystickButton.cs" />
     <Compile Include="LightFollower.cs" />

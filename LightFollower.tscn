@@ -9,9 +9,9 @@ script = ExtResource( 2 )
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 1 )
 texture_scale = 4.0
-color = Color( 0.710938, 0, 1, 1 )
-energy = 2.02
-range_height = 10.0
+color = Color( 1, 0.484, 0.28, 1 )
+energy = 1.5
+range_height = 25.0
 shadow_enabled = true
 shadow_gradient_length = 0.5
 shadow_filter = 1

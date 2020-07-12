@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://testlevel.tmx" type="PackedScene" id=1]
-[ext_resource path="res://textures/light_96.png" type="Texture" id=2]
+[ext_resource path="res://DebugOverlay.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Joystick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Inventory.tscn" type="PackedScene" id=5]
@@ -13,17 +13,6 @@
 
 [node name="GlobalLight" type="CanvasModulate" parent="."]
 color = Color( 0.45, 0.45, 0.45, 1 )
-
-[node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 255.07, 160.405 )
-texture = ExtResource( 2 )
-texture_scale = 4.38
-color = Color( 1, 0.78625, 0.28, 1 )
-range_height = 50.0
-shadow_enabled = true
-shadow_gradient_length = 0.5
-shadow_filter = 1
-shadow_filter_smooth = 4.0
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 87.9965, 64.0534 )
@@ -40,5 +29,7 @@ margin_left = 4.0
 margin_top = 4.0
 
 [node name="LightFollower" parent="." instance=ExtResource( 6 )]
-position = Vector2( 172.965, 87.0609 )
+position = Vector2( 148.042, 92.3743 )
 _nodePath = NodePath("../Player")
+
+[node name="DebugOverlay" parent="." instance=ExtResource( 2 )]

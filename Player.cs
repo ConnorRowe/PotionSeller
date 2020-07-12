@@ -16,6 +16,7 @@ public class Player : KinematicBody2D
     private Direction _playerDirection = Direction.Right;
     private Sprite _playerSprite;
     private Inventory _inventory;
+    private DebugOverlay _debugOverlay;
 
     // Assets
     private Texture _runForwards;
@@ -53,6 +54,7 @@ public class Player : KinematicBody2D
         _joystick = GetParent().GetNode("CanvasLayer/Joystick").GetChild<JoystickButton>(0);
         _playerSprite = GetNode<Sprite>("PlayerSprite");
         _inventory = GetParent().GetNode<Inventory>("CanvasLayer/Inventory");
+        _debugOverlay = GetParent().GetNode<DebugOverlay>("DebugOverlay");
 
         // Load assets
         _runForwards = GD.Load<Texture>("res://textures/Player_run_forwards.png");
@@ -68,6 +70,9 @@ public class Player : KinematicBody2D
 
         _invItems.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5) });
         GetParent().GetNode<Inventory>("CanvasLayer/Inventory").UpdateSlots(_invItems);
+
+        _debugOverlay.TrackProperty(nameof(_motion), this);
+        _debugOverlay.TrackFunc(nameof(DirectionAsString), this);
     }
 
     public override void _PhysicsProcess(float delta)
@@ -189,5 +194,21 @@ public class Player : KinematicBody2D
 
         _invItems.Add(itemStack);
         _inventory.Update();
+    }
+
+    public String DirectionAsString()
+    {
+        switch (_playerDirection)
+        {
+            case Direction.Up:
+                return "Up";
+            case Direction.Down:
+                return "Down";
+            case Direction.Left:
+                return "Left";
+            case Direction.Right:
+                return "Right";
+        }
+        return "";
     }
 }
