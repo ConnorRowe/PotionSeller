@@ -72,7 +72,7 @@
 					"potion_colour": "Orange",
 					"Effects": [],
 					"img": "17dd01bfb42e075b05a059111389833e",
-					"description": ""
+					"description": "Coveted for its rich hues when used as a pigment, only alchemists know its best use - as a poison."
 				},
 				{
 					"name": "Holly Berries",
@@ -81,7 +81,7 @@
 					"potion_colour": "IndianRed",
 					"Effects": [],
 					"img": "1804adde692964e511a23d4de6a692b9",
-					"description": ""
+					"description": "Somewhat toxic, yet when brewed properly, restoritive properties are revealed."
 				},
 				{
 					"name": "Brimstone",
@@ -90,16 +90,16 @@
 					"potion_colour": "LightGoldenrod",
 					"Effects": [],
 					"img": "114d086be977570d0a998f47ae9372fe",
-					"description": ""
+					"description": "With a potent aroma and hellish connotations, people fear it. Despite this, it has strong healing and empowering properties."
 				},
 				{
 					"name": "Aqua Fortis",
 					"type": 1,
-					"rarity": 1,
+					"rarity": 2,
 					"potion_colour": "PaleGoldenrod",
 					"Effects": [],
 					"img": "a53d8b943fb8b692e75a4a2d238152be",
-					"description": ""
+					"description": "A strong, rare acid. It reacts violently even with the air and forms thick fumes of dark orange."
 				},
 				{
 					"name": "Aqua Vitae",
@@ -108,7 +108,7 @@
 					"potion_colour": "Snow",
 					"Effects": [],
 					"img": "d7211b79625790a61f138dd80a9b14c2",
-					"description": ""
+					"description": "Also known as 'Spirit of Wine', it is a common solvent distilled from booze."
 				},
 				{
 					"name": "Elderberries",
@@ -117,7 +117,7 @@
 					"potion_colour": "RebeccaPurple",
 					"Effects": [],
 					"img": "413a348931acfa173bd9bbf0ae18961c",
-					"description": ""
+					"description": "A berry found throughout forests all over the isles. Commonly known to help one see as a cat does."
 				},
 				{
 					"name": "Veiled Stinkhorn Gleba",

@@ -18,7 +18,7 @@ public class Item : Reference
         Legendary
     }
 
-    public static Color CommonColour = Colors.LightSlateGray;
+    public static Color CommonColour = Colors.AliceBlue;
     public static Color UncommonColour = Colors.Chartreuse;
     public static Color RareColour = Colors.MediumBlue;
     public static Color LegendaryColour = Colors.DarkOrange;
@@ -65,9 +65,9 @@ public class Item : Reference
         _description = description;
     }
 
-    public static Color GetRarityColour(Item item)
+    public static Color GetRarityColour(Item.Rarity rarity)
     {
-        switch (item.ItemRarity)
+        switch (rarity)
         {
             case Rarity.Common:
                 return CommonColour;
@@ -79,5 +79,35 @@ public class Item : Reference
                 return LegendaryColour;
         }
         return Colors.Magenta;
+    }
+
+    public static string GetRarityName(Item.Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common:
+                return "Common";
+            case Rarity.Uncommon:
+                return "Uncommon";
+            case Rarity.Rare:
+                return "Rare";
+            case Rarity.Legendary:
+                return "Legendary";
+        }
+        return string.Empty;
+    }
+
+    public static string GetItemTypeName(Item.ItemType itemType)
+    {
+        switch(itemType)
+        {
+            case ItemType.Reagent:
+                return "Reagent";
+            case ItemType.Solvent:
+                return "Solvent";
+            case ItemType.Finisher:
+                return "Finisher";
+        }
+        return string.Empty;
     }
 }

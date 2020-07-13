@@ -12,6 +12,7 @@ public class Inventory : Control
     Texture _itemSlotHighlight;
     Texture _slotEnd;
     DynamicFont _smallFont;
+    ItemTooltip _itemTooltip;
 
     private System.Collections.Generic.List<Item.ItemStack> _itemStacks;
 
@@ -20,6 +21,8 @@ public class Inventory : Control
         _itemSlot = GD.Load<Texture>("res://textures/item_slot.png");
         _itemSlotHighlight = GD.Load<Texture>("res://textures/item_slot_highlight.png");
         _smallFont = GD.Load<DynamicFont>("res://font/small_font.tres");
+
+        _itemTooltip = GetParent().GetNode<ItemTooltip>("ItemTooltip");
     }
 
     public override void _Draw()
@@ -41,7 +44,7 @@ public class Inventory : Control
                     if (itemId < _itemStacks.Count)
                     {
                         if (itemId == _selectedItemId)
-                            DrawTexture(_itemSlotHighlight, texPos, Item.GetRarityColour(_itemStacks[itemId].item));
+                            DrawTexture(_itemSlotHighlight, texPos, Item.GetRarityColour(_itemStacks[itemId].item.ItemRarity));
 
                         DrawTexture(_itemStacks[itemId].item.IconTex, texPos + itemTexOffset);
                         string stackCount = _itemStacks[itemId].stackCount.ToString();
@@ -90,6 +93,15 @@ public class Inventory : Control
     public void SelectSlot(int itemId)
     {
         _selectedItemId = itemId;
+
+        if (itemId >= 0)
+        {
+            int x = Mathf.CeilToInt((float)itemId + 1 / (float)_rows);
+            int y = Mathf.CeilToInt((float)itemId % (float)_rows);
+            _itemTooltip.Open(_itemStacks[itemId].item, new Vector2((x * _itemSlot.GetWidth() + itemTexOffset.x) + MarginLeft, (y * _itemSlot.GetHeight() + itemTexOffset.y) + MarginTop));
+        }
+        else
+            _itemTooltip.Close();
 
         Update();
     }

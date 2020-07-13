@@ -1,0 +1,105 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://textures/thin_dark_nineslice.png" type="Texture" id=1]
+[ext_resource path="res://font/coders_crux.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://ItemTooltip.cs" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 11
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 8
+use_mipmaps = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 8
+use_mipmaps = true
+font_data = ExtResource( 2 )
+
+[node name="ItemTooltip" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -320.0
+margin_bottom = -176.0
+rect_min_size = Vector2( 128, 48 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -64.0
+margin_right = -64.0
+texture = ExtResource( 1 )
+region_rect = Rect2( 4, 4, 40, 40 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -60.0
+margin_top = 4.0
+margin_right = -68.0
+margin_bottom = -4.0
+custom_constants/separation = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemName" type="RichTextLabel" parent="VBoxContainer"]
+margin_top = -1.0
+margin_right = 120.0
+margin_bottom = 5.0
+rect_min_size = Vector2( 0, 6 )
+rect_clip_content = false
+size_flags_horizontal = 5
+size_flags_vertical = 4
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[color=#ff8c00]Item Name[/color]
+"
+text = "Item Name
+"
+scroll_active = false
+
+[node name="Type" type="RichTextLabel" parent="VBoxContainer"]
+margin_top = 7.0
+margin_right = 120.0
+margin_bottom = 13.0
+rect_min_size = Vector2( 0, 4 )
+rect_clip_content = false
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "[color=black]Legendary Reagent[/color]"
+text = "Legendary Reagent"
+fit_content_height = true
+scroll_active = false
+
+[node name="Description" type="RichTextLabel" parent="VBoxContainer"]
+margin_top = 14.0
+margin_right = 120.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 14 )
+rect_clip_content = false
+size_flags_vertical = 3
+custom_fonts/normal_font = SubResource( 3 )
+text = "Really long winded description of an item that doesnt even exist in the real game...
+
+"
+scroll_active = false
+
+[node name="Tween" type="Tween" parent="."]

@@ -68,7 +68,7 @@ public class Player : KinematicBody2D
         spriteAnimTimer.WaitTime = 1f / _SpriteFPS;
         spriteAnimTimer.Connect("timeout", this, nameof(AnimateSprite));
 
-        _invItems.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5) });
+        _invItems.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5), new Item.ItemStack(Items.AQUA_FORTIS, 1), new Item.ItemStack(Items.HOLLY_BERRIES, 3), new Item.ItemStack(Items.AQUA_VITAE, 1) });
         GetParent().GetNode<Inventory>("CanvasLayer/Inventory").UpdateSlots(_invItems);
 
         _debugOverlay.TrackProperty(nameof(_motion), this);
