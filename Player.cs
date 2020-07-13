@@ -73,6 +73,7 @@ public class Player : KinematicBody2D
 
         _debugOverlay.TrackProperty(nameof(_motion), this);
         _debugOverlay.TrackFunc(nameof(DirectionAsString), this);
+        _debugOverlay.TrackProperty(nameof(_inventory.Scale), _inventory, "Inventory Scale");
     }
 
     public override void _PhysicsProcess(float delta)

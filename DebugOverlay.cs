@@ -5,15 +5,17 @@ public class DebugOverlay : CanvasLayer
 {
     private struct TrackedStat
     {
-        public String propertyName;
+        public string propertyName;
         public WeakRef objectRef;
         public bool isFunc;
+        public string nameOverride;
 
-        public TrackedStat(String propertyName, WeakRef objectRef, bool isFunc = false)
+        public TrackedStat(string propertyName, WeakRef objectRef, bool isFunc = false, string nameOverride = "")
         {
             this.propertyName = propertyName;
             this.objectRef = objectRef;
             this.isFunc = isFunc;
+            this.nameOverride = nameOverride;
         }
     }
 
@@ -44,13 +46,13 @@ public class DebugOverlay : CanvasLayer
             {
                 if ((stat.isFunc ? statObj.Call(stat.propertyName) : statObj.Get(stat.propertyName)) != null)
                 {
-                    labelText += stat.propertyName + ": " + (stat.isFunc ? statObj.Call(stat.propertyName).ToString() : statObj.Get(stat.propertyName).ToString()) + "\n";
+                    labelText += (stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": " + (stat.isFunc ? statObj.Call(stat.propertyName).ToString() : statObj.Get(stat.propertyName).ToString()) + "\n";
                 }
                 else    // helps with the godot c# problem where some methods like Call and Get use snake_case for builtin names
                 {
                     if ((stat.isFunc ? statObj.Call(stat.propertyName.ToLower()) : statObj.Get(stat.propertyName.ToLower())) != null)
                     {
-                        labelText += stat.propertyName + ": " + (stat.isFunc ? statObj.Call(stat.propertyName.ToLower()).ToString() : statObj.Get(stat.propertyName.ToLower().ToString())) + "\n";
+                        labelText += (stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": " + (stat.isFunc ? statObj.Call(stat.propertyName.ToLower()).ToString() : statObj.Get(stat.propertyName.ToLower().ToString())) + "\n";
                     }
                 }
             }
@@ -59,14 +61,14 @@ public class DebugOverlay : CanvasLayer
         _label.Text = labelText;
     }
 
-    public void TrackProperty(String propertyName, Godot.Object objectRef)
+    public void TrackProperty(string propertyName, Godot.Object objectRef, string nameOverride = "")
     {
-        _trackedStats.Add(new TrackedStat(propertyName, WeakRef(objectRef)));
+        _trackedStats.Add(new TrackedStat(propertyName, WeakRef(objectRef), false, nameOverride));
     }
 
-    public void TrackFunc(String funcName, Godot.Object objectRef)
+    public void TrackFunc(string funcName, Godot.Object objectRef, string nameOverride = "")
     {
-        _trackedStats.Add(new TrackedStat(funcName, WeakRef(objectRef), true));
+        _trackedStats.Add(new TrackedStat(funcName, WeakRef(objectRef), true, nameOverride));
     }
 
 

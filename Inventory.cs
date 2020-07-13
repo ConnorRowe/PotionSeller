@@ -17,7 +17,7 @@ public class Inventory : Control
 
     private System.Collections.Generic.List<Item.ItemStack> _itemStacks;
 
-    public float Scale { get { return _scale; } set { _scale = value; _smallFont.Size = Mathf.FloorToInt(12 * Scale); } }
+    public float Scale { get { return _scale; } set { _scale = value; _smallFont.Size = Mathf.FloorToInt(12 * Scale); Update(); } }
 
     public override void _Ready()
     {
@@ -85,6 +85,15 @@ public class Inventory : Control
             {
                 SelectSlot(-1);
             }
+        }
+
+        if (@event.IsActionPressed("debug_scrollup"))
+        {
+            Scale += 0.1f;
+        }
+        if (@event.IsActionPressed("debug_scrolldown"))
+        {
+            Scale -= 0.1f;
         }
     }
 
