@@ -44,7 +44,7 @@ public class ItemTooltip : Control
         {
             UpdateLabels(item);
             MarginLeft = pos.x + 64f;
-            RectPosition = new Vector2(pos.x + 48f, RectPosition.y);
+            RectPosition = new Vector2(pos.x, pos.y);
             RectSize = RectMinSize;
             hasItemQueued = false;
             _tween.InterpolateProperty(this, "rect_scale", new Vector2(0f, 1f), new Vector2(1f, 1f), .5f, Tween.TransitionType.Bounce, Tween.EaseType.Out);
