@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/enchanted_forest_longer.ogg-ae4e45f2918650f5ba02330112bbe76d.oggstr"
+
+[deps]
+
+source_file="res://audio/music/enchanted_forest_longer.ogg"
+dest_files=[ "res://.import/enchanted_forest_longer.ogg-ae4e45f2918650f5ba02330112bbe76d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

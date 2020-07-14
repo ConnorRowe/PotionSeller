@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Mortar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Pestle.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://textures/helpbutton.png" type="Texture" id=8]
 [ext_resource path="res://textures/pestle_holder.png" type="Texture" id=9]
 [ext_resource path="res://font/small_font.tres" type="DynamicFont" id=10]
+[ext_resource path="res://audio/music/alchemists_theme.ogg" type="AudioStream" id=11]
 
 [sub_resource type="ParticlesMaterial" id=1]
 trail_divisor = 4
@@ -157,3 +158,8 @@ polygon = PoolVector2Array( -23, 12, -24, 8.99998, -19, -12, -18, -12, -17, -9.0
 
 [node name="Table" type="CollisionPolygon2D" parent="MortarPestle/StaticColliders"]
 polygon = PoolVector2Array( -38, -268, -38, 12, 410, 12, 410, -268, 418, -268, 418, 20, -46, 20, -46, -268 )
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -0.05
+autoplay = true

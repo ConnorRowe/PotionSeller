@@ -25,6 +25,8 @@ public class Player : KinematicBody2D
     private Texture _runBackwardsNormal;
     private Texture _runRight;
     private Texture _runRightNormal;
+    private AudioStreamOGGVorbis _forestSong;
+    private AudioStreamPlayer _audioPlayer;
 
     // Gameplay vars
     private const float _MaxSpeed = 100f;
@@ -55,6 +57,7 @@ public class Player : KinematicBody2D
         _playerSprite = GetNode<Sprite>("PlayerSprite");
         _inventory = GetParent().GetNode<Inventory>("CanvasLayer/Inventory");
         _debugOverlay = GetParent().GetNode<DebugOverlay>("DebugOverlay");
+        _audioPlayer = GetNode<AudioStreamPlayer>("AudioPlayer");
 
         // Load assets
         _runForwards = GD.Load<Texture>("res://textures/Player_run_forwards.png");
@@ -63,6 +66,7 @@ public class Player : KinematicBody2D
         _runForwardsNormal = GD.Load<Texture>("res://textures/normal/Player_run_forwards_n.png");
         _runBackwardsNormal = GD.Load<Texture>("res://textures/normal/Player_run_backwards_n.png");
         _runRightNormal = GD.Load<Texture>("res://textures/normal/Player_run_right_n.png");
+        _forestSong = GD.Load<AudioStreamOGGVorbis>("res://audio/music/enchanted_forest_longer.ogg");
 
         Timer spriteAnimTimer = GetNode<Timer>("SpriteAnimateTimer");
         spriteAnimTimer.WaitTime = 1f / _SpriteFPS;
@@ -74,6 +78,9 @@ public class Player : KinematicBody2D
         _debugOverlay.TrackProperty(nameof(_motion), this);
         _debugOverlay.TrackFunc(nameof(DirectionAsString), this);
         _debugOverlay.TrackProperty(nameof(_inventory.Scale), _inventory, "Inventory Scale");
+
+        _audioPlayer.Stream = _forestSong;
+        _audioPlayer.Play();
     }
 
     public override void _PhysicsProcess(float delta)

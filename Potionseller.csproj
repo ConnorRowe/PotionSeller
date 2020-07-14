@@ -53,11 +53,16 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alchemy.cs" />
     <Compile Include="DebugOverlay.cs" />
     <Compile Include="Inventory.cs" />
+    <Compile Include="ItemButton.cs" />
     <Compile Include="ItemTooltip.cs" />
     <Compile Include="JoystickButton.cs" />
     <Compile Include="LightFollower.cs" />
+    <Compile Include="Mortar.cs" />
+    <Compile Include="Pestle.cs" />
+    <Compile Include="PotionCircle.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Items.cs" />

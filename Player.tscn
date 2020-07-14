@@ -44,3 +44,6 @@ limit_bottom = 1600
 
 [node name="SpriteAnimateTimer" type="Timer" parent="."]
 autostart = true
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -0.032
