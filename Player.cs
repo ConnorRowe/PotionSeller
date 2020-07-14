@@ -17,6 +17,7 @@ public class Player : KinematicBody2D
     private Sprite _playerSprite;
     private Inventory _inventory;
     private DebugOverlay _debugOverlay;
+    private ItemTooltip _itemTooltip;
 
     // Assets
     private Texture _runForwards;
@@ -58,6 +59,8 @@ public class Player : KinematicBody2D
         _inventory = GetParent().GetNode<Inventory>("CanvasLayer/Inventory");
         _debugOverlay = GetParent().GetNode<DebugOverlay>("DebugOverlay");
         _audioPlayer = GetNode<AudioStreamPlayer>("AudioPlayer");
+        _itemTooltip = (ItemTooltip)GD.Load<PackedScene>("res://ItemTooltip.tscn").Instance();
+        GetParent().GetNode("CanvasLayer").AddChild(_itemTooltip);
 
         // Load assets
         _runForwards = GD.Load<Texture>("res://textures/Player_run_forwards.png");
@@ -79,8 +82,10 @@ public class Player : KinematicBody2D
         _debugOverlay.TrackFunc(nameof(DirectionAsString), this);
         _debugOverlay.TrackProperty(nameof(_inventory.Scale), _inventory, "Inventory Scale");
 
+        _inventory.Connect("ItemSlotSelected", this, nameof(InventorySlotSelected));
+
         _audioPlayer.Stream = _forestSong;
-        _audioPlayer.Play();
+        //_audioPlayer.Play();
     }
 
     public override void _PhysicsProcess(float delta)
@@ -202,6 +207,14 @@ public class Player : KinematicBody2D
 
         _invItems.Add(itemStack);
         _inventory.Update();
+    }
+
+    private void InventorySlotSelected(int slotId)
+    {
+        if (slotId >= 0)
+            _itemTooltip.Open(_invItems[slotId].item, _inventory.GetSlotPosition(slotId));
+        else
+            _itemTooltip.Close();
     }
 
     public String DirectionAsString()

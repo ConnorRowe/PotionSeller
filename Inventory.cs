@@ -8,24 +8,28 @@ public class Inventory : Control
     private int _selectedItemId = -1;
     private Vector2 _itemTexOffset = new Vector2(2f, 2f);
     private float _scale = 1.0f;
+    private Vector2 _drawPosition = new Vector2();
+    private bool _canDeselect = true;
 
-    Texture _itemSlot;
-    Texture _itemSlotHighlight;
-    Texture _slotEnd;
-    DynamicFont _smallFont;
-    ItemTooltip _itemTooltip;
+    private Texture _itemSlot;
+    private Texture _itemSlotHighlight;
+    private DynamicFont _smallFont;
 
     private System.Collections.Generic.List<Item.ItemStack> _itemStacks;
 
     public float Scale { get { return _scale; } set { _scale = value; _smallFont.Size = Mathf.FloorToInt(12 * Scale); Update(); } }
+    public Vector2 DrawPosition { get { return _drawPosition; } set { _drawPosition = value; Update(); } }
+    public int SelectedItemId { get { return _selectedItemId; } }
+    public bool CanDeselect { get { return _canDeselect; } set { _canDeselect = value; } }
+
+    [Signal]
+    delegate void ItemSlotSelected(int slotId);
 
     public override void _Ready()
     {
         _itemSlot = GD.Load<Texture>("res://textures/item_slot.png");
         _itemSlotHighlight = GD.Load<Texture>("res://textures/item_slot_highlight.png");
         _smallFont = GD.Load<DynamicFont>("res://font/small_font.tres");
-
-        _itemTooltip = GetParent().GetNode<ItemTooltip>("ItemTooltip");
 
         Scale = 1.5f;
     }
@@ -39,10 +43,10 @@ public class Inventory : Control
             for (int x = 0; x <= _columns; x++)
             {
                 if (x == _columns)
-                    DrawTextureRectRegion(_itemSlot, new Rect2(new Vector2(MarginLeft + (x * (_itemSlot.GetWidth() * _scale)), MarginTop + (y * (_itemSlot.GetHeight() * _scale))), new Vector2(2f * _scale, _itemSlot.GetHeight() * _scale)), new Rect2(0f, 0f, 2f, 20f));
+                    DrawTextureRectRegion(_itemSlot, new Rect2(new Vector2(DrawPosition.x + (x * (_itemSlot.GetWidth() * _scale)), DrawPosition.y + (y * (_itemSlot.GetHeight() * _scale))), new Vector2(2f * _scale, _itemSlot.GetHeight() * _scale)), new Rect2(0f, 0f, 2f, 20f));
                 else
                 {
-                    Vector2 texPos = new Vector2(MarginLeft + (x * _itemSlot.GetWidth() * _scale), MarginTop + (y * _itemSlot.GetHeight() * _scale));
+                    Vector2 texPos = new Vector2(DrawPosition.x + (x * _itemSlot.GetWidth() * _scale), DrawPosition.y + (y * _itemSlot.GetHeight() * _scale));
 
                     DrawTextureRect(_itemSlot, new Rect2(texPos, new Vector2(_itemSlot.GetWidth() * _scale, _itemSlot.GetHeight() * _scale)), false);
 
@@ -69,19 +73,20 @@ public class Inventory : Control
         if (@event is InputEventScreenTouch eventScreenTouch && eventScreenTouch.Pressed)
         {
             // If touch position is inside the inventory rectangle
-            if (new Rect2(eventScreenTouch.Position, new Vector2(1f, 1f)).Intersects(new Rect2(MarginLeft, MarginTop, _columns * _itemSlot.GetWidth() * _scale, _rows * _itemSlot.GetHeight() * _scale)))
+            if (new Rect2(eventScreenTouch.Position, new Vector2(1f, 1f)).Intersects(new Rect2(DrawPosition.x, DrawPosition.y, _columns * _itemSlot.GetWidth() * _scale, _rows * _itemSlot.GetHeight() * _scale)))
             {
-                int x = Mathf.FloorToInt((eventScreenTouch.Position.x - MarginLeft) / (_itemSlot.GetWidth() * _scale));
-                int y = Mathf.FloorToInt((eventScreenTouch.Position.y - MarginTop) / (_itemSlot.GetHeight() * _scale));
+                int x = Mathf.FloorToInt((eventScreenTouch.Position.x - DrawPosition.x) / (_itemSlot.GetWidth() * _scale));
+                int y = Mathf.FloorToInt((eventScreenTouch.Position.y - DrawPosition.y) / (_itemSlot.GetHeight() * _scale));
                 int itemId = x + (y * _columns);
 
                 if (itemId < _itemStacks.Count)
                 {
-                    GD.Print("Item overlap: " + _itemStacks[itemId].ToString());
+                    GD.Print("Item selected: " + _itemStacks[itemId].ToString());
                     SelectSlot(itemId);
+                    EmitSignal(nameof(ItemSlotSelected), itemId);
                 }
             }
-            else
+            else if (_selectedItemId > -1 && _canDeselect)
             {
                 SelectSlot(-1);
             }
@@ -108,14 +113,20 @@ public class Inventory : Control
     {
         _selectedItemId = itemId;
 
-        if (itemId >= 0)
-        {
-            int x = Mathf.CeilToInt((float)itemId + 1 / (float)_rows);
-            int y = Mathf.CeilToInt((float)itemId % (float)_rows);
-            _itemTooltip.Open(_itemStacks[itemId].item, new Vector2(((x * _itemSlot.GetWidth() * _scale) + _itemTexOffset.x) + MarginLeft + (_itemSlot.GetWidth() * 1.5f * _scale), (((y + 1) * _itemSlot.GetHeight() * _scale) + _itemTexOffset.y) + MarginTop + (4f * _scale)));
-        }
-        else
-            _itemTooltip.Close();
+        Update();
+    }
+
+    public Vector2 GetSlotPosition(int slotId)
+    {
+        int x = Mathf.CeilToInt((float)slotId + 1 / (float)_rows);
+        int y = Mathf.CeilToInt((float)slotId % (float)_rows);
+        return new Vector2(((x * _itemSlot.GetWidth() * _scale) + _itemTexOffset.x) + MarginLeft + (_itemSlot.GetWidth() * 1.5f * _scale), (((y + 1) * _itemSlot.GetHeight() * _scale) + _itemTexOffset.y) + MarginTop + (4f * _scale));
+    }
+
+    public void SetSize(int slotsX, int slotsY)
+    {
+        _columns = slotsX;
+        _rows = slotsY;
 
         Update();
     }

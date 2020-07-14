@@ -99,7 +99,7 @@ public class Item : Reference
 
     public static string GetItemTypeName(Item.ItemType itemType)
     {
-        switch(itemType)
+        switch (itemType)
         {
             case ItemType.Reagent:
                 return "Reagent";
@@ -109,5 +109,10 @@ public class Item : Reference
                 return "Finisher";
         }
         return string.Empty;
+    }
+
+    public static ItemStack DecreaseItemStackCount(ItemStack itemStack, int count)
+    {
+        return new ItemStack(itemStack.item, itemStack.stackCount - count);
     }
 }

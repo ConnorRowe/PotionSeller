@@ -56,7 +56,6 @@
     <Compile Include="Alchemy.cs" />
     <Compile Include="DebugOverlay.cs" />
     <Compile Include="Inventory.cs" />
-    <Compile Include="ItemButton.cs" />
     <Compile Include="ItemTooltip.cs" />
     <Compile Include="JoystickButton.cs" />
     <Compile Include="LightFollower.cs" />

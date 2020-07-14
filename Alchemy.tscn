@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Mortar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Pestle.tscn" type="PackedScene" id=2]
@@ -11,6 +11,13 @@
 [ext_resource path="res://textures/pestle_holder.png" type="Texture" id=9]
 [ext_resource path="res://font/small_font.tres" type="DynamicFont" id=10]
 [ext_resource path="res://audio/music/alchemists_theme.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Inventory.tscn" type="PackedScene" id=12]
+[ext_resource path="res://ItemTooltip.tscn" type="PackedScene" id=13]
+[ext_resource path="res://font/coders_crux.ttf" type="DynamicFontData" id=14]
+
+[sub_resource type="DynamicFont" id=2]
+size = 13
+font_data = ExtResource( 14 )
 
 [sub_resource type="ParticlesMaterial" id=1]
 trail_divisor = 4
@@ -49,16 +56,6 @@ normal = ExtResource( 8 )
 [node name="MortarPestle" type="Node2D" parent="."]
 
 [node name="PickReagents" type="Node2D" parent="MortarPestle"]
-
-[node name="InventoryBox" type="HBoxContainer" parent="MortarPestle/PickReagents"]
-margin_left = 249.0
-margin_top = 20.0
-margin_right = 364.0
-margin_bottom = 60.0
-custom_constants/separation = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SelectReagents" type="Label" parent="MortarPestle/PickReagents"]
 margin_left = 320.0
@@ -108,7 +105,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Inventory" parent="MortarPestle/PickReagents" instance=ExtResource( 12 )]
+
 [node name="Tween" type="Tween" parent="MortarPestle/PickReagents"]
+
+[node name="ItemTooltip" parent="MortarPestle/PickReagents" instance=ExtResource( 13 )]
+margin_left = 378.0
+margin_top = 138.0
+margin_right = 506.0
+margin_bottom = 186.0
+
+[node name="AddToPotion" type="Button" parent="MortarPestle/PickReagents"]
+margin_left = 330.0
+margin_top = 185.0
+margin_right = 430.0
+margin_bottom = 224.727
+theme = ExtResource( 7 )
+custom_fonts/font = SubResource( 2 )
+shortcut_in_tooltip = false
+text = "Add To Potion"
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Crush" type="Node2D" parent="MortarPestle"]
 visible = false
@@ -162,4 +181,3 @@ polygon = PoolVector2Array( -38, -268, -38, 12, 410, 12, 410, -268, 418, -268, 4
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
 volume_db = -0.05
-autoplay = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://testlevel.tmx" type="PackedScene" id=1]
 [ext_resource path="res://DebugOverlay.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://Joystick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Inventory.tscn" type="PackedScene" id=5]
 [ext_resource path="res://LightFollower.tscn" type="PackedScene" id=6]
-[ext_resource path="res://ItemTooltip.tscn" type="PackedScene" id=7]
 
 [node name="Node2D" type="Node2D"]
 
@@ -28,12 +27,6 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 4.0
 margin_top = 4.0
-
-[node name="ItemTooltip" parent="CanvasLayer" instance=ExtResource( 7 )]
-margin_left = 72.711
-margin_top = 30.5455
-margin_right = -275.289
-margin_bottom = -161.455
 
 [node name="LightFollower" parent="." instance=ExtResource( 6 )]
 position = Vector2( 148.042, 92.3743 )

@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Potionseller"
-run/main_scene="res://World.tscn"
+run/main_scene="res://Alchemy.tscn"
 config/icon="res://icon.png"
 
 [display]

@@ -33,14 +33,15 @@ public class Alchemy : Node2D
     // Nodes
     private Mortar _mortar;
     private PotionCircle _potionCircle;
-    private HBoxContainer _inventoryBox;
     private VBoxContainer _potionReagentsBox;
     private AcceptDialog _helpDialog;
     private Button _proceedToCrush;
     private Tween _tween;
+    private Inventory _inventory;
+    private ItemTooltip _itemTooltip;
 
     // Lists
-    private System.Collections.Generic.List<Item> _itemList = new System.Collections.Generic.List<Item>();
+    private System.Collections.Generic.List<Item.ItemStack> _itemList = new System.Collections.Generic.List<Item.ItemStack>();
     private System.Collections.Generic.List<Item> _potionReagents = new System.Collections.Generic.List<Item>();
     private Sprite[] _reagentAnimSprites = new Sprite[4];
 
@@ -56,12 +57,16 @@ public class Alchemy : Node2D
         // Get references to all the nodes we need to manipulate
         _mortar = GetNode<Mortar>("MortarPestle/Mortar");
         _potionCircle = GetNode<PotionCircle>("MortarPestle/Crush/PotionCircle");
-        _inventoryBox = GetNode<HBoxContainer>("MortarPestle/PickReagents/InventoryBox");
         _potionReagentsBox = GetNode<VBoxContainer>("MortarPestle/PickReagents/PotionReagentsBox");
         _mortar.Alchemy = this;
         _helpDialog = GetNode<AcceptDialog>("HelpDialog");
         _proceedToCrush = GetNode<Button>("MortarPestle/PickReagents/ProceedToCrush");
         _tween = GetNode<Tween>("MortarPestle/PickReagents/Tween");
+        _inventory = GetNode<Inventory>("MortarPestle/PickReagents/Inventory");
+        _inventory.SetSize(4, 4);
+        _inventory.DrawPosition = new Vector2(324f, 16f);
+        _inventory.CanDeselect = false;
+        _itemTooltip = GetNode<ItemTooltip>("MortarPestle/PickReagents/ItemTooltip");
 
         // Load assets needed
         _itemBtnBg = GD.Load<Texture>("res://textures/item_slot.png");
@@ -72,16 +77,12 @@ public class Alchemy : Node2D
         GetNode<TouchScreenButton>("HelpButton").Connect("released", this, nameof(DisplayHelpPopup));
         _proceedToCrush.Connect("pressed", this, nameof(ProceedToCrushPressed));
         _tween.Connect("tween_all_completed", this, nameof(ReagentFadeTweenCompleted));
+        _inventory.Connect("ItemSlotSelected", this, nameof(InventorySlotSelected));
+        GetNode<Button>("MortarPestle/PickReagents/AddToPotion").Connect("pressed", this, nameof(ItemButtonReleased));
 
         // Adding items to simulate an inventory
-        _itemList.Add(Items.FLY_AGARIC);
-        _itemList.Add(Items.ORPIMENT);
-        _itemList.Add(Items.HOLLY_BERRIES);
-        _itemList.Add(Items.BRIMSTONE);
-        _itemList.Add(Items.ELDERBERRIES);
-
-        // Generate buttons for each item
-        CreateReagentButtons();
+        _itemList.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5), new Item.ItemStack(Items.ORPIMENT, 1), new Item.ItemStack(Items.HOLLY_BERRIES, 3) });
+        _inventory.UpdateSlots(_itemList);
     }
 
     public void PestleHitMortar(float power)
@@ -91,47 +92,26 @@ public class Alchemy : Node2D
 
     }
 
-    public void CreateReagentButtons()
+    public void ItemButtonReleased()
     {
-        foreach (Item i in _itemList)
-        {
-            ItemButton newItemButton = new ItemButton();
-            newItemButton.Normal = i.IconTex;
-            newItemButton.Alchemy = this;
-            newItemButton.Item = i;
+        if (_inventory.SelectedItemId < 0)
+            return;
 
-            Control buttonControl = new Control();
-            buttonControl.AddChild(newItemButton);
-            buttonControl.RectMinSize = new Vector2(32f, 32f);
+        Item.ItemStack selectedItemStack = _itemList[_inventory.SelectedItemId];
 
-            _inventoryBox.AddChild(buttonControl);
-
-            Sprite buttonBg = new Sprite();
-            buttonBg.Texture = _itemBtnBg;
-            buttonBg.Offset = new Vector2(7f, 8f);
-            buttonBg.ZIndex = -1;
-
-            newItemButton.AddChild(buttonBg);
-        }
-
-        Sprite closingSprite = new Sprite();
-        Control endControl = new Control();
-        endControl.RectMinSize = new Vector2(32f, 32f);
-
-        closingSprite.Texture = _itemBtnBg;
-        closingSprite.Offset = new Vector2(-1, 8f);
-        closingSprite.RegionEnabled = true;
-        closingSprite.RegionRect = new Rect2(0f, 0f, 2f, 20f);
-        closingSprite.Scale = Vector2.One * 2;
-
-        _inventoryBox.AddChild(endControl);
-        endControl.AddChild(closingSprite);
-    }
-
-    public void ItemButtonReleased(ItemButton btn)
-    {
         if (_alchemyStage == AlchemyStage.MortarPestle && _mortarPestleStage == MortarPestleStage.PickReagents && _potionReagents.Count < 4)
         {
+            if (selectedItemStack.stackCount > 1)
+            {
+                _itemList[_inventory.SelectedItemId] = Item.DecreaseItemStackCount(selectedItemStack, 1);
+            }
+            else
+            {
+                _itemList.RemoveAt(_inventory.SelectedItemId);
+            }
+
+            _inventory.Update();
+
             HBoxContainer itemInfo = new HBoxContainer();
             itemInfo.Set("custom_constants/separation", 10f);
 
@@ -143,7 +123,7 @@ public class Alchemy : Node2D
             itemBG.Centered = false;
 
             Sprite itemSprite = new Sprite();
-            itemSprite.Texture = btn.Item.IconTex;
+            itemSprite.Texture = selectedItemStack.item.IconTex;
             itemSprite.Centered = false;
             itemSprite.Position = new Vector2(2f, 2f);
             itemBG.AddChild(itemSprite);
@@ -151,18 +131,18 @@ public class Alchemy : Node2D
             itemInfo.AddChild(itemIcon);
 
             Label itemName = new Label();
-            itemName.Text = btn.Item.Name;
+            itemName.Text = selectedItemStack.item.Name;
             itemName.AddFontOverride("font", _smallFont);
             itemName.MarginLeft = 4f;
             itemInfo.AddChild(itemName);
 
             _potionReagentsBox.AddChild(itemInfo);
 
-            _potionReagents.Add(btn.Item);
+            _potionReagents.Add(selectedItemStack.item);
             _proceedToCrush.Disabled = false;
         }
 
-        GD.Print("Selected: " + btn.Item.Name);
+        GD.Print("Selected: " + selectedItemStack.item.Name);
     }
 
     public void DisplayHelpPopup()
@@ -293,5 +273,13 @@ public class Alchemy : Node2D
                 }
             }
         }
+    }
+
+    private void InventorySlotSelected(int slotId)
+    {
+        if (slotId >= 0)
+            _itemTooltip.Open(_itemList[slotId].item, _itemTooltip.RectPosition);
+        else
+            _itemTooltip.Close();
     }
 }
