@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/terrain_normal_atlas.png-d1b3a7537fb25399c497a6b76ed66abe.stex"
+path="res://.import/aqua_vitae_n.png-7fafa0f86eafe209b13efef2fc1973e2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/normal/terrain_normal_atlas.png"
-dest_files=[ "res://.import/terrain_normal_atlas.png-d1b3a7537fb25399c497a6b76ed66abe.stex" ]
+source_file="res://textures/normal/aqua_vitae_n.png"
+dest_files=[ "res://.import/aqua_vitae_n.png-7fafa0f86eafe209b13efef2fc1973e2.stex" ]
 
 [params]
 
@@ -24,7 +24,7 @@ flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false

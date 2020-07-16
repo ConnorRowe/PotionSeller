@@ -44,6 +44,7 @@ public class Item : Reference
     private readonly ItemType _itemType;
     private readonly Rarity _rarity;
     private readonly Texture _iconTex;
+    private readonly Texture _normalMap;
     private readonly Color _potionColour;
     private readonly string _description;
 
@@ -51,6 +52,7 @@ public class Item : Reference
     public ItemType Type { get { return _itemType; } }
     public Rarity ItemRarity { get { return _rarity; } }
     public Texture IconTex { get { return _iconTex; } }
+    public Texture NormalMap { get { return _normalMap; } }
     public Color PotionColour { get { return _potionColour; } }
     public string Description { get { return _description; } }
 
@@ -61,6 +63,7 @@ public class Item : Reference
         _itemType = itemType;
         _rarity = rarity;
         _iconTex = GD.Load<Texture>("res://textures/" + iconTexFileName + ".png");
+        _normalMap = GD.Load<Texture>("res://textures/normal/" + iconTexFileName + "_n.png");
         _potionColour = potionColour;
         _description = description;
     }

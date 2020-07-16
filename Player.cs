@@ -249,13 +249,13 @@ public class Player : KinematicBody2D
         switch (_playerDirection)
         {
             case Direction.Up:
-                return new Vector2(0f, -1f);
+                return Vector2.Up;
             case Direction.Down:
-                return new Vector2(0f, 1f);
+                return Vector2.Down;
             case Direction.Left:
-                return new Vector2(-1f, 0f);
+                return Vector2.Left;
             case Direction.Right:
-                return new Vector2(1f, 0f);
+                return Vector2.Right;
         }
         return Vector2.Zero;
     }
@@ -270,13 +270,15 @@ public class Player : KinematicBody2D
         //Casts a ray 1 tile in front of the player
 
         var spaceState = GetWorld2d().DirectSpaceState;
-        var result = spaceState.IntersectRay(Position, Position + (DirectionAsVector() * 16f), new Godot.Collections.Array(new object[] { this }), collideWithAreas: true);
+        Vector2 rayFrom = Position;
+        rayFrom.y += 8f;
+        var result = spaceState.IntersectRay(rayFrom, rayFrom + (DirectionAsVector() * 16f), new Godot.Collections.Array(new object[] { this }), collideWithAreas: true);
 
         if (result.Count > 0)
         {
             //Has collided
 
-            if (((CollisionObject2D)result["collider"]).GetParent() is GroundPlant groundPlant)
+            if ((result["collider"]) is CollisionObject2D col && col.GetParent() is GroundPlant groundPlant)
             {
                 GD.Print("Collided with: " + groundPlant.ItemStack.item.Name);
                 groundPlant.Interact(this);

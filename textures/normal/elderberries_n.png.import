@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white_128.png-fd97a46ae314af579de4eda1b22f26a7.stex"
+path="res://.import/elderberries_n.png-3a24ee6796736252b3fee62adbca3dc2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/white_128.png"
-dest_files=[ "res://.import/white_128.png-fd97a46ae314af579de4eda1b22f26a7.stex" ]
+source_file="res://textures/normal/elderberries_n.png"
+dest_files=[ "res://.import/elderberries_n.png-3a24ee6796736252b3fee62adbca3dc2.stex" ]
 
 [params]
 
