@@ -23,7 +23,7 @@ public class Item : Reference
     public static Color RareColour = Colors.MediumBlue;
     public static Color LegendaryColour = Colors.DarkOrange;
 
-    public struct ItemStack
+    public class ItemStack
     {
         public Item item;
         public int stackCount;

@@ -30,7 +30,7 @@ public class Player : KinematicBody2D
     private AudioStreamPlayer _audioPlayer;
 
     // Gameplay vars
-    private const float _MaxSpeed = 100f;
+    private const float _MaxSpeed = 70f;
     private const float _Acceleration = 1000f;
     private Vector2 _motion = Vector2.Zero;
     private const float _SpriteFPS = 8f;
@@ -78,9 +78,9 @@ public class Player : KinematicBody2D
         _invItems.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5), new Item.ItemStack(Items.AQUA_FORTIS, 1), new Item.ItemStack(Items.HOLLY_BERRIES, 3), new Item.ItemStack(Items.AQUA_VITAE, 1) });
         GetParent().GetNode<Inventory>("CanvasLayer/Inventory").UpdateSlots(_invItems);
 
-        _debugOverlay.TrackProperty(nameof(_motion), this);
-        _debugOverlay.TrackFunc(nameof(DirectionAsString), this);
         _debugOverlay.TrackProperty(nameof(_inventory.Scale), _inventory, "Inventory Scale");
+        _debugOverlay.TrackFunc(nameof(FloorPositionString), this, "Player Position");
+        _debugOverlay.TrackProperty("z_index", this, "ZIndex");
 
         _inventory.Connect("ItemSlotSelected", this, nameof(InventorySlotSelected));
 
@@ -118,11 +118,13 @@ public class Player : KinematicBody2D
             _playerIsMoving = false;
             _playerSprite.Frame = 0;
         }
+
+        ZIndex = Mathf.FloorToInt(Position.y + 15f);
     }
 
-    //For testing only
     public override void _Input(InputEvent @event)
     {
+        // For testing only
         if (@event is InputEventKey keyEvent && keyEvent.Pressed)
         {
             if ((KeyList)keyEvent.Scancode == KeyList.T)
@@ -131,6 +133,15 @@ public class Player : KinematicBody2D
                 _inventory.Update();
             }
         }
+
+        // 'action button' input
+        if (@event is InputEventScreenTouch screenTouchEvent && screenTouchEvent.Pressed)
+        {
+            if (screenTouchEvent.Pressed && screenTouchEvent.Position.x > GetViewport().GetVisibleRect().Size.x / 2)
+                ActionButtonPressed(screenTouchEvent.Position);
+        }
+
+
     }
 
     private void DirectionUpdated()
@@ -193,7 +204,7 @@ public class Player : KinematicBody2D
         }
     }
 
-    private void PickupItem(Item.ItemStack itemStack)
+    public void PickupItem(Item.ItemStack itemStack)
     {
         for (int i = 0; i < _invItems.Count; i++)
         {
@@ -231,5 +242,46 @@ public class Player : KinematicBody2D
                 return "Right";
         }
         return "";
+    }
+
+    private Vector2 DirectionAsVector()
+    {
+        switch (_playerDirection)
+        {
+            case Direction.Up:
+                return new Vector2(0f, -1f);
+            case Direction.Down:
+                return new Vector2(0f, 1f);
+            case Direction.Left:
+                return new Vector2(-1f, 0f);
+            case Direction.Right:
+                return new Vector2(1f, 0f);
+        }
+        return Vector2.Zero;
+    }
+
+    private String FloorPositionString()
+    {
+        return "(" + Mathf.FloorToInt(Position.x).ToString() + ", " + Mathf.FloorToInt(Position.y).ToString() + ")";
+    }
+
+    public void ActionButtonPressed(Vector2 position)
+    {
+        //Casts a ray 1 tile in front of the player
+
+        var spaceState = GetWorld2d().DirectSpaceState;
+        var result = spaceState.IntersectRay(Position, Position + (DirectionAsVector() * 16f), new Godot.Collections.Array(new object[] { this }), collideWithAreas: true);
+
+        if (result.Count > 0)
+        {
+            //Has collided
+
+            if (((CollisionObject2D)result["collider"]).GetParent() is GroundPlant groundPlant)
+            {
+                GD.Print("Collided with: " + groundPlant.ItemStack.item.Name);
+                groundPlant.Interact(this);
+                groundPlant.QueueFree();
+            }
+        }
     }
 }

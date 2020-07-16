@@ -83,10 +83,9 @@ public class Inventory : Control
                 {
                     GD.Print("Item selected: " + _itemStacks[itemId].ToString());
                     SelectSlot(itemId);
-                    EmitSignal(nameof(ItemSlotSelected), itemId);
                 }
             }
-            else if (_selectedItemId > -1 && _canDeselect)
+            else if (_canDeselect)
             {
                 SelectSlot(-1);
             }
@@ -112,6 +111,7 @@ public class Inventory : Control
     public void SelectSlot(int itemId)
     {
         _selectedItemId = itemId;
+        EmitSignal(nameof(ItemSlotSelected), itemId);
 
         Update();
     }
