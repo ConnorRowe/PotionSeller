@@ -69,6 +69,7 @@
     <Compile Include="Items.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SwitchButton.cs" />
+    <Compile Include="WavyGrass.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">

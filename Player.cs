@@ -278,11 +278,12 @@ public class Player : KinematicBody2D
         {
             //Has collided
 
-            if ((result["collider"]) is CollisionObject2D col && col.GetParent() is GroundPlant groundPlant)
+            if ((result["collider"]) is CollisionObject2D col && col.GetParent() is IInteractable interactable)
             {
-                GD.Print("Collided with: " + groundPlant.ItemStack.item.Name);
-                groundPlant.Interact(this);
-                groundPlant.QueueFree();
+                interactable.Interact(this);
+
+                if (interactable is GroundPlant groundPlant)
+                    groundPlant.QueueFree();
             }
         }
     }

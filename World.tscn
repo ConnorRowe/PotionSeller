@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://testlevel.tmx" type="PackedScene" id=1]
 [ext_resource path="res://DebugOverlay.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://LightFollower.tscn" type="PackedScene" id=6]
 [ext_resource path="res://SwitchButton.tscn" type="PackedScene" id=7]
 [ext_resource path="res://GroundPlant.tscn" type="PackedScene" id=8]
+[ext_resource path="res://WavyGrass.tscn" type="PackedScene" id=9]
 
 [node name="Node2D" type="Node2D"]
 
@@ -17,7 +18,7 @@
 color = Color( 0.45, 0.45, 0.45, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 87.9965, 64.0534 )
+position = Vector2( 80, 64 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -50,3 +51,36 @@ position = Vector2( 496, 176 )
 
 [node name="GroundPlant4" parent="." instance=ExtResource( 8 )]
 position = Vector2( 384, 128 )
+
+[node name="WavyGrass" parent="." instance=ExtResource( 9 )]
+position = Vector2( 336, 160 )
+
+[node name="WavyGrass2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 352, 176 )
+
+[node name="WavyGrass3" parent="." instance=ExtResource( 9 )]
+position = Vector2( 384, 208 )
+
+[node name="WavyGrass4" parent="." instance=ExtResource( 9 )]
+position = Vector2( 400, 192 )
+
+[node name="WavyGrass5" parent="." instance=ExtResource( 9 )]
+position = Vector2( 432, 144 )
+
+[node name="WavyGrass6" parent="." instance=ExtResource( 9 )]
+position = Vector2( 480, 208 )
+
+[node name="WavyGrass7" parent="." instance=ExtResource( 9 )]
+position = Vector2( 496, 224 )
+
+[node name="WavyGrass8" parent="." instance=ExtResource( 9 )]
+position = Vector2( 528, 224 )
+
+[node name="WavyGrass10" parent="." instance=ExtResource( 9 )]
+position = Vector2( 528, 208 )
+
+[node name="WavyGrass11" parent="." instance=ExtResource( 9 )]
+position = Vector2( 538.114, 213.886 )
+
+[node name="WavyGrass9" parent="." instance=ExtResource( 9 )]
+position = Vector2( 544, 224 )
