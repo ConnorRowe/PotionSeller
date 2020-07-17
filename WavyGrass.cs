@@ -21,12 +21,14 @@ public class WavyGrass : Node2D, IInteractable
                 Position = new Vector2(-3, -9),
                 Texture = _sprites[0].Texture,
                 NormalMap = _sprites[0].NormalMap,
+                Material = _sprites[0].Material
             };
             _sprites[2] = new Sprite()
             {
                 Position = new Vector2(5, -7),
                 Texture = _sprites[0].Texture,
                 NormalMap = _sprites[0].NormalMap,
+                Material = _sprites[0].Material
             };
 
             var offset = GetNode("Offset");
@@ -49,9 +51,12 @@ public class WavyGrass : Node2D, IInteractable
         {
             float delayOffset = i * .075f;
 
-            _tween.InterpolateProperty(_sprites[i], "rotation_degrees", 0f, rotateDegs, .15f, Tween.TransitionType.Quart, Tween.EaseType.InOut, delayOffset);
-            _tween.InterpolateProperty(_sprites[i], "rotation_degrees", rotateDegs, -rotateDegs, .3f, Tween.TransitionType.Quart, Tween.EaseType.InOut, .15f + delayOffset);
-            _tween.InterpolateProperty(_sprites[i], "rotation_degrees", -rotateDegs, 0f, .15f, Tween.TransitionType.Quart, Tween.EaseType.InOut, .45f + delayOffset);
+            if (_sprites[i] != null)
+            {
+                _tween.InterpolateProperty(_sprites[i], "rotation_degrees", 0f, rotateDegs, .15f, Tween.TransitionType.Quart, Tween.EaseType.InOut, delayOffset);
+                _tween.InterpolateProperty(_sprites[i], "rotation_degrees", rotateDegs, -rotateDegs, .3f, Tween.TransitionType.Quart, Tween.EaseType.InOut, .15f + delayOffset);
+                _tween.InterpolateProperty(_sprites[i], "rotation_degrees", -rotateDegs, 0f, .15f, Tween.TransitionType.Quart, Tween.EaseType.InOut, .45f + delayOffset);
+            }
         }
 
         _tween.Start();
