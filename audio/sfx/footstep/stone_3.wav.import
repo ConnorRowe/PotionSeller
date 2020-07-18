@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/stone_3.wav-3fb59b3692e3c4f7730e120b1d2f8da9.sample"
+
+[deps]
+
+source_file="res://audio/sfx/footstep/stone_3.wav"
+dest_files=[ "res://.import/stone_3.wav-3fb59b3692e3c4f7730e120b1d2f8da9.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

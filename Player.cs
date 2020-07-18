@@ -18,6 +18,7 @@ public class Player : KinematicBody2D
     private Inventory _inventory;
     private DebugOverlay _debugOverlay;
     private ItemTooltip _itemTooltip;
+    private Gathering _gathering;
 
     // Assets
     private Texture _runForwards;
@@ -28,6 +29,8 @@ public class Player : KinematicBody2D
     private Texture _runRightNormal;
     private AudioStreamOGGVorbis _forestSong;
     private AudioStreamPlayer _audioPlayer;
+    private AudioStreamPlayer _footstepPlayer;
+    private AudioStream[] _footstepSounds = new AudioStream[12];
 
     // Gameplay vars
     private const float _MaxSpeed = 70f;
@@ -61,6 +64,8 @@ public class Player : KinematicBody2D
         _audioPlayer = GetNode<AudioStreamPlayer>("AudioPlayer");
         _itemTooltip = (ItemTooltip)GD.Load<PackedScene>("res://ItemTooltip.tscn").Instance();
         GetParent().GetNode("CanvasLayer").AddChild(_itemTooltip);
+        _gathering = GetParent<Gathering>();
+        _footstepPlayer = GetNode<AudioStreamPlayer>("FootstepPlayer");
 
         // Load assets
         _runForwards = GD.Load<Texture>("res://textures/Player_run_forwards.png");
@@ -71,6 +76,30 @@ public class Player : KinematicBody2D
         _runRightNormal = GD.Load<Texture>("res://textures/normal/Player_run_right_n.png");
         _forestSong = GD.Load<AudioStreamOGGVorbis>("res://audio/music/enchanted_forest_longer.ogg");
 
+        // Load footstep sounds into an array
+        for (int i = 0; i < _footstepSounds.Length; i++)
+        {
+            string terrainType = string.Empty;
+            int indexOffset = 0;
+            if (i < 4)
+            {
+                terrainType = "dirt";
+            }
+            else if (i >= 4 && i < 8)
+            {
+                terrainType = "grass";
+                indexOffset = 4;
+            }
+            else if (i >= 8)
+            {
+                terrainType = "stone";
+                indexOffset = 8;
+            }
+
+            _footstepSounds[i] = GD.Load<AudioStream>("res://audio/sfx/footstep/" + terrainType + "_" + (i - indexOffset + 1).ToString() + ".wav");
+        }
+
+        // Other setup
         Timer spriteAnimTimer = GetNode<Timer>("SpriteAnimateTimer");
         spriteAnimTimer.WaitTime = 1f / _SpriteFPS;
         spriteAnimTimer.Connect("timeout", this, nameof(AnimateSprite));
@@ -81,11 +110,13 @@ public class Player : KinematicBody2D
         _debugOverlay.TrackProperty(nameof(_inventory.Scale), _inventory, "Inventory Scale");
         _debugOverlay.TrackFunc(nameof(FloorPositionString), this, "Player Position");
         _debugOverlay.TrackProperty("z_index", this, "ZIndex");
+        _debugOverlay.TrackFunc(nameof(GetTerrain), this, "Terrain");
 
         _inventory.Connect("ItemSlotSelected", this, nameof(InventorySlotSelected));
 
         _audioPlayer.Stream = _forestSong;
-        //_audioPlayer.Play();
+        _audioPlayer.VolumeDb = -25f;
+        _audioPlayer.Play();
     }
 
     public override void _PhysicsProcess(float delta)
@@ -197,6 +228,13 @@ public class Player : KinematicBody2D
         if (_playerIsMoving)
         {
             int i = _playerSprite.Frame;
+
+            if (i == 3 || i == 7)
+            {
+                // play footstep sound
+                PlayFootstep();
+            }
+
             i++;
             if (i > 7)
                 i = 0;
@@ -267,7 +305,7 @@ public class Player : KinematicBody2D
 
     public void ActionButtonPressed(Vector2 position)
     {
-        //Casts a ray 1 tile in front of the player
+        // Casts a ray 1 tile in front of the player
 
         var spaceState = GetWorld2d().DirectSpaceState;
         Vector2 rayFrom = Position;
@@ -276,7 +314,7 @@ public class Player : KinematicBody2D
 
         if (result.Count > 0)
         {
-            //Has collided
+            // Has collided
 
             if ((result["collider"]) is CollisionObject2D col && col.GetParent() is IInteractable interactable)
             {
@@ -286,5 +324,35 @@ public class Player : KinematicBody2D
                     groundPlant.QueueFree();
             }
         }
+    }
+
+    private string GetTerrain()
+    {
+        return Gathering.TerrainToString(_gathering.GetTerrainAtPos(GlobalPosition + new Vector2(0f, 15f)));
+    }
+
+    private void PlayFootstep()
+    {
+        int indexOffset = 0;
+
+        switch (_gathering.GetTerrainAtPos(GlobalPosition + new Vector2(0f, 15f)))
+        {
+            case Gathering.Terrain.Grass:
+                {
+                    indexOffset = 4;
+                    break;
+                }
+            case Gathering.Terrain.Stone:
+                {
+                    indexOffset = 8;
+                    break;
+                }
+        }
+
+        // Pick random sound
+        int i = (int)((GD.Randi() % 4) + indexOffset);
+
+        _footstepPlayer.Stream = _footstepSounds[i];
+        _footstepPlayer.Play();
     }
 }

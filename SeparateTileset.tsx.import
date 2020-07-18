@@ -12,8 +12,8 @@ dest_files=[ "res://.import/SeparateTileset.tsx-76c684323e240cc70cba61d9ddfd1898
 [params]
 
 custom_properties=true
-tile_metadata=false
-image_flags=7
+tile_metadata=true
+image_flags=3
 embed_internal_images=false
 save_tiled_properties=false
 apply_offset=false

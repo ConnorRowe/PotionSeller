@@ -12,7 +12,7 @@ dest_files=[ "res://.import/testlevel.tmx-2822a81b7936ae5a3274c25038354429.scn" 
 [params]
 
 custom_properties=true
-tile_metadata=false
+tile_metadata=true
 uv_clip=true
 image_flags=3
 collision_layer=1

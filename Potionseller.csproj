@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Alchemy.cs" />
     <Compile Include="DebugOverlay.cs" />
+    <Compile Include="Gathering.cs" />
     <Compile Include="GroundPlant.cs" />
     <Compile Include="IInteractable.cs" />
     <Compile Include="Inventory.cs" />

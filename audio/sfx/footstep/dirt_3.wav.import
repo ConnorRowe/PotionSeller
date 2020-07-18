@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/dirt_3.wav-41b0621f390048574191370e0726d208.sample"
+
+[deps]
+
+source_file="res://audio/sfx/footstep/dirt_3.wav"
+dest_files=[ "res://.import/dirt_3.wav-41b0621f390048574191370e0726d208.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
