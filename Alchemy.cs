@@ -77,7 +77,7 @@ public class Alchemy : Node2D
         // Signal connections
         GetNode<TouchScreenButton>("HelpButton").Connect("released", this, nameof(DisplayHelpPopup));
         _proceedToCrush.Connect("pressed", this, nameof(ProceedToCrushPressed));
-        _tween.Connect("tween_all_completed", this, nameof(ReagentFadeTweenCompleted));
+        _tween.Connect("tween_all_completed", this, nameof(TweenAllCompleted));
         _inventory.Connect("ItemSlotSelected", this, nameof(InventorySlotSelected));
         GetNode<Button>("MortarPestle/PickReagents/AddToPotion").Connect("pressed", this, nameof(ItemButtonReleased));
 
@@ -199,6 +199,9 @@ public class Alchemy : Node2D
                         _mortarPestleStage = MortarPestleStage.Crush;
                         GetNode<Node2D>("MortarPestle/PickReagents").Visible = false;
                         GetNode<Node2D>("MortarPestle/Crush").Visible = true;
+                        _tween.InterpolateProperty(_potionCircle, "scale", new Vector2(0, 1), new Vector2(1, 1), .4f, Tween.TransitionType.Cubic, Tween.EaseType.InOut);
+                        _tween.InterpolateProperty(GetNode("MortarPestle/Crush/PotionProgress"), "rect_scale", new Vector2(0, 1), new Vector2(1, 1), .4f, Tween.TransitionType.Cubic, Tween.EaseType.InOut);
+                        _tween.Start();
                         for (int i = 1; i < _potionReagents.Count; i++)
                         {
                             _mortar.AverageColour = _potionReagents[i].PotionColour.LinearInterpolate(_potionReagents[i - 1].PotionColour, .5f);
@@ -242,52 +245,66 @@ public class Alchemy : Node2D
         _reagentAnimState = ReagentAnim.Hover;
     }
 
-    public void ReagentFadeTweenCompleted()
+    public void TweenAllCompleted()
     {
-        if (_reagentAnimState == ReagentAnim.Hover)
+        switch (_alchemyStage)
         {
-            _proceedToCrush.Disabled = true;
-
-            foreach (Node N in _potionReagentsBox.GetChildren())
-            {
-                N.QueueFree();
-            }
-
-            foreach (Sprite S in _reagentAnimSprites)
-            {
-                if (S != null)
+            case AlchemyStage.MortarPestle:
                 {
-                    _tween.InterpolateProperty(S, "global_position", S.GlobalPosition, new Vector2(160f + (float)GD.RandRange(-10, 10), 40f + (float)GD.RandRange(-10, 10)), 1f, Tween.TransitionType.Cubic);
-                }
-            }
+                    switch (_mortarPestleStage)
+                    {
+                        case MortarPestleStage.PickReagents:
+                            {
+                                if (_reagentAnimState == ReagentAnim.Hover)
+                                {
+                                    _proceedToCrush.Disabled = true;
 
-            _tween.Start();
-            _reagentAnimState = ReagentAnim.Fall;
-        }
-        else if (_reagentAnimState == ReagentAnim.Fall)
-        {
-            foreach (Sprite S in _reagentAnimSprites)
-            {
-                if (S != null)
-                {
-                    _tween.InterpolateProperty(S, "global_position", S.GlobalPosition, _mortar.GlobalPosition + new Vector2((float)GD.RandRange(-10, 10), (float)GD.RandRange(-10, 10)), 1.5f, Tween.TransitionType.Cubic);
-                }
-            }
+                                    foreach (Node N in _potionReagentsBox.GetChildren())
+                                    {
+                                        N.QueueFree();
+                                    }
 
-            _tween.Start();
-            _reagentAnimState = ReagentAnim.End;
-        }
-        else if (_reagentAnimState == ReagentAnim.End)
-        {
-            NextStage();
-            for (int i = 0; i < _reagentAnimSprites.Length; i++)
-            {
-                if (_reagentAnimSprites[i] != null)
-                {
-                    _reagentAnimSprites[i].QueueFree();
-                    _reagentAnimSprites[i] = null;
+                                    foreach (Sprite S in _reagentAnimSprites)
+                                    {
+                                        if (S != null)
+                                        {
+                                            _tween.InterpolateProperty(S, "global_position", S.GlobalPosition, new Vector2(160f + (float)GD.RandRange(-10, 10), 40f + (float)GD.RandRange(-10, 10)), 1f, Tween.TransitionType.Cubic);
+                                        }
+                                    }
+
+                                    _tween.Start();
+                                    _reagentAnimState = ReagentAnim.Fall;
+                                }
+                                else if (_reagentAnimState == ReagentAnim.Fall)
+                                {
+                                    foreach (Sprite S in _reagentAnimSprites)
+                                    {
+                                        if (S != null)
+                                        {
+                                            _tween.InterpolateProperty(S, "global_position", S.GlobalPosition, _mortar.GlobalPosition + new Vector2((float)GD.RandRange(-10, 10), (float)GD.RandRange(-10, 10)), 1.5f, Tween.TransitionType.Cubic);
+                                        }
+                                    }
+
+                                    _tween.Start();
+                                    _reagentAnimState = ReagentAnim.End;
+                                }
+                                else if (_reagentAnimState == ReagentAnim.End)
+                                {
+                                    NextStage();
+                                    for (int i = 0; i < _reagentAnimSprites.Length; i++)
+                                    {
+                                        if (_reagentAnimSprites[i] != null)
+                                        {
+                                            _reagentAnimSprites[i].QueueFree();
+                                            _reagentAnimSprites[i] = null;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                    }
+                    break;
                 }
-            }
         }
     }
 

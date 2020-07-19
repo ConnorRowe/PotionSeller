@@ -125,8 +125,10 @@ visible = false
 [node name="PotionProgress" type="TextureProgress" parent="MortarPestle/Crush"]
 margin_left = 63.0
 margin_top = 62.0
-margin_right = 72.0
-margin_bottom = 183.0
+margin_right = 71.0
+margin_bottom = 182.0
+rect_min_size = Vector2( 8, 120 )
+rect_pivot_offset = Vector2( 4, 0 )
 max_value = 120.0
 allow_greater = true
 texture_under = ExtResource( 4 )
