@@ -5,10 +5,12 @@
 [ext_resource path="res://WavyGrass.cs" type="Script" id=3]
 [ext_resource path="res://shader/Swaying.shader" type="Shader" id=4]
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
+shader_param/speed = 1.0
+shader_param/scale = 0.2
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 7, 7 )
 
 [node name="WavyGrass" type="Node2D"]
@@ -18,7 +20,7 @@ script = ExtResource( 3 )
 position = Vector2( 8, 0 )
 
 [node name="Sprite" type="Sprite" parent="Offset"]
-material = SubResource( 2 )
+material = SubResource( 1 )
 position = Vector2( 0, -4 )
 texture = ExtResource( 2 )
 normal_map = ExtResource( 1 )
@@ -27,7 +29,8 @@ offset = Vector2( 0, -4 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="Area" type="Area2D" parent="."]
+visible = false
 
 [node name="Collider" type="CollisionShape2D" parent="Area"]
 position = Vector2( 8, -8 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )

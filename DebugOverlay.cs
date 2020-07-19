@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class DebugOverlay : CanvasLayer
+public class DebugOverlay : Node2D
 {
     private struct TrackedStat
     {
@@ -19,46 +19,62 @@ public class DebugOverlay : CanvasLayer
         }
     }
 
-    private Label _label;
+    private Font _tinyFont;
     private System.Collections.Generic.List<TrackedStat> _trackedStats = new System.Collections.Generic.List<TrackedStat>();
     public bool ShowFPS = true;
     public bool ShowMemory = true;
 
     public override void _Ready()
     {
-        _label = GetNode<Label>("Label");
-        _label.Modulate = new Color(1f, 1f, 1f, .6f);
+        _tinyFont = GD.Load<Font>("res://font/tiny_font.tres");
+
+        Modulate = new Color(1f, 1f, 1f, .6f);
     }
 
     public override void _Process(float delta)
     {
-        String labelText = "";
+        Update();
+    }
+
+    public override void _Draw()
+    {
+        int ind = 0;
 
         if (ShowFPS)
-            labelText += Engine.GetFramesPerSecond().ToString() + "fps\n";
-
+        {
+            DrawRightAlignShadowedString(Engine.GetFramesPerSecond().ToString() + "fps", ind);
+            ind++;
+        }
         if (ShowMemory)
-            labelText += "Memory: " + ToFileSize(OS.GetStaticMemoryUsage()) + "\n";
-
+        {
+            DrawRightAlignShadowedString("Memory: " + ToFileSize(OS.GetStaticMemoryUsage()), ind);
+            ind++;
+        }
         foreach (TrackedStat stat in _trackedStats)
         {
             if (stat.objectRef.GetRef() is Godot.Object statObj)
             {
                 if ((stat.isFunc ? statObj.Call(stat.propertyName) : statObj.Get(stat.propertyName)) != null)
                 {
-                    labelText += (stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": " + (stat.isFunc ? statObj.Call(stat.propertyName).ToString() : statObj.Get(stat.propertyName).ToString()) + "\n";
+                    if ((stat.isFunc ? statObj.Call(stat.propertyName) : statObj.Get(stat.propertyName)) is Color color)
+                    {
+                        DrawColourProperty((stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": ", ind, color);
+                    }
+                    else
+                        DrawRightAlignShadowedString((stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": " + (stat.isFunc ? statObj.Call(stat.propertyName).ToString() : statObj.Get(stat.propertyName).ToString()), ind);
+
+                    ind++;
                 }
                 else    // helps with the godot c# problem where some methods like Call and Get use snake_case for builtin names
                 {
                     if ((stat.isFunc ? statObj.Call(stat.propertyName.ToLower()) : statObj.Get(stat.propertyName.ToLower())) != null)
                     {
-                        labelText += (stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": " + (stat.isFunc ? statObj.Call(stat.propertyName.ToLower()).ToString() : statObj.Get(stat.propertyName.ToLower().ToString())) + "\n";
+                        DrawRightAlignShadowedString((stat.nameOverride == "" ? stat.propertyName : stat.nameOverride) + ": " + (stat.isFunc ? statObj.Call(stat.propertyName.ToLower()).ToString() : statObj.Get(stat.propertyName.ToLower().ToString())), ind);
+                        ind++;
                     }
                 }
             }
         }
-
-        _label.Text = labelText;
     }
 
     public void TrackProperty(string propertyName, Godot.Object objectRef, string nameOverride = "")
@@ -69,6 +85,21 @@ public class DebugOverlay : CanvasLayer
     public void TrackFunc(string funcName, Godot.Object objectRef, string nameOverride = "")
     {
         _trackedStats.Add(new TrackedStat(funcName, WeakRef(objectRef), true, nameOverride));
+    }
+
+    private void DrawRightAlignShadowedString(string str, int idx, Vector2 offset = new Vector2())
+    {
+        float xOffset = _tinyFont.GetStringSize(str).x;
+
+        DrawString(_tinyFont, offset + new Vector2(1 - xOffset, 5 + (idx * 6)), str, Colors.Black);
+        DrawString(_tinyFont, offset + new Vector2(-xOffset, 4 + (idx * 6)), str);
+
+    }
+
+    private void DrawColourProperty(string str, int idx, Color color)
+    {
+        DrawRightAlignShadowedString(str, idx, new Vector2(-8f, 0f));
+        DrawRect(new Rect2(new Vector2(-10, 1 + (idx * 6)), new Vector2(10, 4)), color);
     }
 
 

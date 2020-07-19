@@ -39,6 +39,7 @@ public class Alchemy : Node2D
     private Tween _tween;
     private Inventory _inventory;
     private ItemTooltip _itemTooltip;
+    private DebugOverlay _debugOverlay;
 
     // Lists
     private System.Collections.Generic.List<Item.ItemStack> _itemList = new System.Collections.Generic.List<Item.ItemStack>();
@@ -58,7 +59,6 @@ public class Alchemy : Node2D
         _mortar = GetNode<Mortar>("MortarPestle/Mortar");
         _potionCircle = GetNode<PotionCircle>("MortarPestle/Crush/PotionCircle");
         _potionReagentsBox = GetNode<VBoxContainer>("MortarPestle/PickReagents/PotionReagentsBox");
-        _mortar.Alchemy = this;
         _helpDialog = GetNode<AcceptDialog>("HelpDialog");
         _proceedToCrush = GetNode<Button>("MortarPestle/PickReagents/ProceedToCrush");
         _tween = GetNode<Tween>("MortarPestle/PickReagents/Tween");
@@ -67,6 +67,7 @@ public class Alchemy : Node2D
         _inventory.DrawPosition = new Vector2(324f, 16f);
         _inventory.CanDeselect = false;
         _itemTooltip = GetNode<ItemTooltip>("MortarPestle/PickReagents/ItemTooltip");
+        _debugOverlay = GetNode<DebugOverlay>("DebugOverlay");
 
         // Load assets needed
         _itemBtnBg = GD.Load<Texture>("res://textures/item_slot.png");
@@ -83,6 +84,10 @@ public class Alchemy : Node2D
         // Adding items to simulate an inventory
         _itemList.AddRange(new Item.ItemStack[] { new Item.ItemStack(Items.BRIMSTONE, 1), new Item.ItemStack(Items.FLY_AGARIC, 3), new Item.ItemStack(Items.ELDERBERRIES, 5), new Item.ItemStack(Items.ORPIMENT, 1), new Item.ItemStack(Items.HOLLY_BERRIES, 3) });
         _inventory.UpdateSlots(_itemList);
+
+        // Tracking stuff for debug
+        _debugOverlay.TrackProperty(nameof(_mortarPestleStage), this, "MortarPestleStage");
+        _debugOverlay.TrackProperty(nameof(_mortar.CurrentParticleColour), _mortar, "Splash Colour");
     }
 
     public void PestleHitMortar(float power)
@@ -194,6 +199,13 @@ public class Alchemy : Node2D
                         _mortarPestleStage = MortarPestleStage.Crush;
                         GetNode<Node2D>("MortarPestle/PickReagents").Visible = false;
                         GetNode<Node2D>("MortarPestle/Crush").Visible = true;
+                        for (int i = 0; i < _potionReagents.Count; i++)
+                        {
+                            _mortar.ReagentColours[i] = _potionReagents[i].PotionColour;
+
+                            if (i > 0)
+                                _mortar.AverageColour = _potionReagents[i].PotionColour.LinearInterpolate(_potionReagents[i - 1].PotionColour, .5f);
+                        }
                     }
                     break;
                 }

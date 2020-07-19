@@ -60,7 +60,7 @@ public class Player : KinematicBody2D
         _joystick = GetParent().GetNode("CanvasLayer/Joystick").GetChild<JoystickButton>(0);
         _playerSprite = GetNode<Sprite>("PlayerSprite");
         _inventory = GetParent().GetNode<Inventory>("CanvasLayer/Inventory");
-        _debugOverlay = GetParent().GetNode<DebugOverlay>("DebugOverlay");
+        _debugOverlay = GetParent().GetNode<DebugOverlay>("CanvasLayer/DebugOverlay");
         _audioPlayer = GetNode<AudioStreamPlayer>("AudioPlayer");
         _itemTooltip = (ItemTooltip)GD.Load<PackedScene>("res://ItemTooltip.tscn").Instance();
         GetParent().GetNode("CanvasLayer").AddChild(_itemTooltip);
@@ -232,7 +232,7 @@ public class Player : KinematicBody2D
             if (i == 3 || i == 7)
             {
                 // play footstep sound
-                PlayFootstep();
+                PlayFootstep(_gathering.GetTerrainAtPos(GlobalPosition + new Vector2(0f, 15f)));
             }
 
             i++;
@@ -320,6 +320,9 @@ public class Player : KinematicBody2D
             {
                 interactable.Interact(this);
 
+                if (interactable is GroundPlant || interactable is WavyGrass)
+                    PlayFootstep(Gathering.Terrain.Grass);
+
                 if (interactable is GroundPlant groundPlant)
                     groundPlant.QueueFree();
             }
@@ -331,11 +334,11 @@ public class Player : KinematicBody2D
         return Gathering.TerrainToString(_gathering.GetTerrainAtPos(GlobalPosition + new Vector2(0f, 15f)));
     }
 
-    private void PlayFootstep()
+    private void PlayFootstep(Gathering.Terrain terrain)
     {
         int indexOffset = 0;
 
-        switch (_gathering.GetTerrainAtPos(GlobalPosition + new Vector2(0f, 15f)))
+        switch (terrain)
         {
             case Gathering.Terrain.Grass:
                 {
