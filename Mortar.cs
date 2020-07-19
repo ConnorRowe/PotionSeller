@@ -10,13 +10,14 @@ public class Mortar : StaticBody2D
 
     private bool _canHit = true;
     private Particles2D _mortarSplash;
-    private Color[] _reagentColours = new Color[4];
     private Color _averageColour;
     private Color _currentParticleColour = new Color();
 
-    public Color[] ReagentColours { get { return _reagentColours; } }
+    private Gradient _crushGradient = new Gradient();
+
     public Color AverageColour { get { return _averageColour; } set { _averageColour = value; } }
     public Color CurrentParticleColour { get { return _currentParticleColour; } }
+    public Gradient CrushGradient { get { return _crushGradient; } set { _crushGradient = value; } }
 
     public override void _Ready()
     {
@@ -60,16 +61,8 @@ public class Mortar : StaticBody2D
 
     private Color LerpReagentColours(float t)
     {
-        t *= _reagentColours.Length;
-        t = Mathf.Clamp(t, 0f, (float)_reagentColours.Length);
+        _currentParticleColour = _crushGradient.Interpolate(t);
 
-        Color newColour = _reagentColours[0];
-        for (int i = 1; i < _reagentColours.Length; i++)
-        {
-            newColour = newColour.LinearInterpolate(_reagentColours[i], t - i);
-            _currentParticleColour = newColour;
-        }
-
-        return newColour;
+        return _currentParticleColour;
     }
 }

@@ -199,12 +199,16 @@ public class Alchemy : Node2D
                         _mortarPestleStage = MortarPestleStage.Crush;
                         GetNode<Node2D>("MortarPestle/PickReagents").Visible = false;
                         GetNode<Node2D>("MortarPestle/Crush").Visible = true;
+                        for (int i = 1; i < _potionReagents.Count; i++)
+                        {
+                            _mortar.AverageColour = _potionReagents[i].PotionColour.LinearInterpolate(_potionReagents[i - 1].PotionColour, .5f);
+                        }
+
+                        // Create mortar crush gradient
                         for (int i = 0; i < _potionReagents.Count; i++)
                         {
-                            _mortar.ReagentColours[i] = _potionReagents[i].PotionColour;
-
-                            if (i > 0)
-                                _mortar.AverageColour = _potionReagents[i].PotionColour.LinearInterpolate(_potionReagents[i - 1].PotionColour, .5f);
+                            _mortar.CrushGradient.SetOffset(i, ((float)i + 1f) / (float)_potionReagents.Count);
+                            _mortar.CrushGradient.SetColor(i, _potionReagents[i].PotionColour);
                         }
                     }
                     break;
