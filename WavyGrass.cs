@@ -13,27 +13,23 @@ public class WavyGrass : Node2D, IInteractable
 
 
         _sprites[0] = GetNode<Sprite>("Offset/Sprite");
+        _sprites[0].ZIndex = Mathf.FloorToInt(_sprites[0].GlobalPosition.y);
+
+        // 50% chance to make a cluster
         if (GD.Randf() > .5f)
         {
             _sprites[0].Position = new Vector2(-1, 0);
-            _sprites[1] = new Sprite()
-            {
-                Position = new Vector2(-3, -9),
-                Texture = _sprites[0].Texture,
-                NormalMap = _sprites[0].NormalMap,
-                Material = _sprites[0].Material
-            };
-            _sprites[2] = new Sprite()
-            {
-                Position = new Vector2(5, -7),
-                Texture = _sprites[0].Texture,
-                NormalMap = _sprites[0].NormalMap,
-                Material = _sprites[0].Material
-            };
-
             var offset = GetNode("Offset");
-            offset.AddChild(_sprites[2]);
-            offset.AddChild(_sprites[1]);
+
+            for (int i = 1; i < _sprites.Length; i++)
+            {
+                _sprites[i] = (Sprite)_sprites[0].Duplicate();
+                offset.AddChild(_sprites[i]);
+            }
+
+            _sprites[0].Position = new Vector2(1, 4);
+            _sprites[1].Position = new Vector2(5, -6);
+            _sprites[2].Position = new Vector2(-7, -4);
 
             foreach (var sprite in _sprites)
             {

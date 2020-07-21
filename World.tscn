@@ -112,8 +112,8 @@ position = Vector2( 158.612, 261.523 )
 position = Vector2( 164.498, 271.637 )
 
 [node name="Tree" type="Sprite" parent="."]
-position = Vector2( 530, 212 )
-z_index = 212
+position = Vector2( 530.21, 210.318 )
+z_index = 210
 texture = ExtResource( 12 )
 normal_map = ExtResource( 11 )
 offset = Vector2( 0, -26 )

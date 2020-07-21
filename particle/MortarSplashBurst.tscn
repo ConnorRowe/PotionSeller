@@ -7,6 +7,7 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.756, 0.802273 ), -0.505051
 curve = SubResource( 1 )
 
 [sub_resource type="ParticlesMaterial" id=3]
+trail_divisor = 4
 emission_shape = 1
 emission_sphere_radius = 16.0
 flag_align_y = true
@@ -22,10 +23,12 @@ scale = 2.0
 scale_curve = SubResource( 2 )
 hue_variation = 0.01
 
-[node name="MortarSplashBurst" type="Particles2D"]
+[node name="MortarSplash" type="Particles2D"]
 emitting = false
-amount = 2000
+amount = 200
 lifetime = 5.0
+one_shot = true
+explosiveness = 1.0
 process_material = SubResource( 3 )
 __meta__ = {
 "_editor_description_": ""

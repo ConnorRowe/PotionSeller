@@ -30,6 +30,10 @@ public class Alchemy : Node2D
     private MortarPestleStage _mortarPestleStage = MortarPestleStage.PickReagents;
     private ReagentAnim _reagentAnimState = ReagentAnim.Fade;
 
+    // Export
+    [Export] // If using high quality particles
+    private bool _highParticles = true;
+
     // Nodes
     private Mortar _mortar;
     private PotionCircle _potionCircle;
@@ -50,6 +54,9 @@ public class Alchemy : Node2D
     private Texture _itemBtnBg;
     private Texture _singleItemSlot;
     private DynamicFont _smallFont;
+
+    // Properties
+    public bool HighParticles { get { return _highParticles; } set { _highParticles = value; } }
 
     public override void _Ready()
     {
