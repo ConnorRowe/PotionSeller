@@ -41,92 +41,96 @@
 					"name": "Fly Agaric",
 					"type": 0,
 					"rarity": 1,
-					"Effects": [
-						{
-							"Effects": [
-								0,
-								[
-									0
-								],
-								10
-							]
-						},
-						{
-							"Effects": [
-								0,
-								[
-									1
-								],
-								5
-							]
-						}
-					],
 					"potion_colour": "LightPink",
 					"img": "ddfa0281c4ef3ba6eca3a52d7b599094",
-					"description": "A very distinctive mushroom; its bright red cap with white warts inspired early alchemists to brew potions inciting a magical strength."
+					"description": "A very distinctive mushroom; its bright red cap with white warts inspired early alchemists to brew potions inciting a magical strength.",
+					"Effects": [
+						{
+							"Effects": 0
+						},
+						{
+							"Effects": 1
+						}
+					]
 				},
 				{
 					"name": "Orpiment",
 					"type": 0,
 					"rarity": 2,
 					"potion_colour": "Orange",
-					"Effects": [],
 					"img": "17dd01bfb42e075b05a059111389833e",
-					"description": "Coveted for its rich hues when used as a pigment, only alchemists know its best use - as a poison."
+					"description": "Coveted for its rich hues when used as a pigment, only alchemists know its best use - as a poison.",
+					"Effects": [
+						{
+							"Effects": 6
+						}
+					]
 				},
 				{
 					"name": "Holly Berries",
 					"type": 0,
 					"rarity": 0,
 					"potion_colour": "IndianRed",
-					"Effects": [],
 					"img": "1804adde692964e511a23d4de6a692b9",
-					"description": "Somewhat toxic, yet when brewed properly, restoritive properties are revealed."
+					"description": "Somewhat toxic, yet when brewed properly, restoritive properties are revealed.",
+					"Effects": [
+						{
+							"Effects": 5
+						}
+					]
 				},
 				{
 					"name": "Brimstone",
 					"type": 0,
 					"rarity": 0,
 					"potion_colour": "LightGoldenrod",
-					"Effects": [],
 					"img": "114d086be977570d0a998f47ae9372fe",
-					"description": "With a potent aroma and hellish connotations, people fear it. Despite this, it has strong healing and empowering properties."
+					"description": "With a potent aroma and hellish connotations, people fear it. Despite this, it has strong healing and empowering properties.",
+					"Effects": [
+						{
+							"Effects": 5
+						}
+					]
 				},
 				{
 					"name": "Aqua Fortis",
 					"type": 1,
 					"rarity": 2,
 					"potion_colour": "PaleGoldenrod",
-					"Effects": [],
 					"img": "a53d8b943fb8b692e75a4a2d238152be",
-					"description": "A strong, rare acid. It reacts violently even with the air and forms thick fumes of dark orange."
+					"description": "A strong, rare acid. It reacts violently even with the air and forms thick fumes of dark orange.",
+					"Effects": []
 				},
 				{
 					"name": "Aqua Vitae",
 					"type": 1,
 					"rarity": 0,
 					"potion_colour": "Snow",
-					"Effects": [],
 					"img": "d7211b79625790a61f138dd80a9b14c2",
-					"description": "Also known as 'Spirit of Wine', it is a common solvent distilled from booze."
+					"description": "Also known as 'Spirit of Wine', it is a common solvent distilled from booze.",
+					"Effects": []
 				},
 				{
 					"name": "Elderberries",
 					"type": 0,
 					"rarity": 0,
 					"potion_colour": "Indigo",
-					"Effects": [],
 					"img": "413a348931acfa173bd9bbf0ae18961c",
-					"description": "A berry found throughout forests all over the isles. Commonly known to help one see as a cat does."
+					"description": "A berry found throughout forests all over the isles. Commonly known to help one see as a cat does.",
+					"Effects": []
 				},
 				{
-					"name": "Veiled Stinkhorn Gleba",
+					"name": "Veiled Stinkhorn",
 					"type": 0,
-					"rarity": 0,
-					"potion_colour": "",
-					"Effects": [],
+					"rarity": 2,
+					"potion_colour": "AntiqueWhite",
 					"img": "",
-					"description": "Invisibility"
+					"description": "With a stench typical of stinkhorns, some mercenaries believe it makes them less visible in times of danger.",
+					"Effects": [
+						{
+							"Effects": 2
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -141,8 +145,9 @@
 			"lines": [],
 			"columns": [
 				{
-					"typeStr": "9:Effect",
-					"name": "Effects"
+					"typeStr": "5:strength,stamina,invisibility,wisdom,intelligence,healing,poison",
+					"name": "Effects",
+					"display": null
 				}
 			]
 		}

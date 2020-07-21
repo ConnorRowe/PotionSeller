@@ -11,5 +11,6 @@ public class Items : Reference
     public static Item AQUA_FORTIS = new Item("Aqua Fortis", Item.ItemType.Solvent, Item.Rarity.Rare, "aqua_fortis", Colors.PaleGoldenrod, "A strong, rare acid. It reacts violently even with the air and forms thick fumes of dark orange.");
     public static Item AQUA_VITAE = new Item("Aqua Vitae", Item.ItemType.Solvent, Item.Rarity.Common, "aqua_vitae", Colors.Snow, "Also known as 'Spirit of Wine', it is a common solvent distilled from booze.");
     public static Item ELDERBERRIES = new Item("Elderberries", Item.ItemType.Reagent, Item.Rarity.Common, "elderberries", Colors.Indigo, "A berry found throughout forests all over the isles. Commonly known to help one see as a cat does.");
+    public static Item VEILED_STINKHORN = new Item("Veiled Stinkhorn", Item.ItemType.Reagent, Item.Rarity.Rare, "veiled_stinkhorn", Colors.AntiqueWhite, "With a stench typical of stinkhorns, some mercenaries believe it makes them less visible in times of danger.");
 
 }

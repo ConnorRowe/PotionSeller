@@ -4,7 +4,7 @@ using System;
 public class GroundPlant : Sprite, IInteractable
 {
     private Item.ItemStack _itemStack;
-    private System.Collections.Generic.List<Item> possibleItems = new System.Collections.Generic.List<Item>(new Item[] { Items.ELDERBERRIES, Items.FLY_AGARIC, Items.HOLLY_BERRIES, Items.ORPIMENT });
+    private System.Collections.Generic.List<Item> possibleItems = new System.Collections.Generic.List<Item>(new Item[] { Items.ELDERBERRIES, Items.FLY_AGARIC, Items.HOLLY_BERRIES, Items.ORPIMENT, Items.VEILED_STINKHORN });
 
     public Item.ItemStack ItemStack { get { return _itemStack; } set { _itemStack = value; UpdateSpriteFromItemStack(); } }
 

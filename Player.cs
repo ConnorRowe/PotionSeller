@@ -170,6 +170,10 @@ public class Player : KinematicBody2D
         {
             if (screenTouchEvent.Pressed && screenTouchEvent.Position.x > GetViewport().GetVisibleRect().Size.x / 2)
                 ActionButtonPressed(screenTouchEvent.Position);
+            else
+            {
+                ((Node2D)_joystick.GetParent()).GlobalPosition = screenTouchEvent.Position;
+            }
         }
 
 

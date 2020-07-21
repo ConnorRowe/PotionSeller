@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://testlevel.tmx" type="PackedScene" id=1]
 [ext_resource path="res://DebugOverlay.tscn" type="PackedScene" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://GroundPlant.tscn" type="PackedScene" id=8]
 [ext_resource path="res://WavyGrass.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Gathering.cs" type="Script" id=10]
+[ext_resource path="res://textures/normal/conifer_n.png" type="Texture" id=11]
+[ext_resource path="res://textures/conifer.png" type="Texture" id=12]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 10 )
@@ -20,7 +22,7 @@ script = ExtResource( 10 )
 color = Color( 0.64, 0.64, 0.64, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 80, 64 )
+position = Vector2( 465.101, 132.744 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -108,3 +110,10 @@ position = Vector2( 158.612, 261.523 )
 
 [node name="WavyGrass15" parent="." instance=ExtResource( 9 )]
 position = Vector2( 164.498, 271.637 )
+
+[node name="Tree" type="Sprite" parent="."]
+position = Vector2( 530, 212 )
+z_index = 212
+texture = ExtResource( 12 )
+normal_map = ExtResource( 11 )
+offset = Vector2( 0, -26 )
