@@ -49,3 +49,7 @@ autostart = true
 volume_db = -0.032
 
 [node name="FootstepPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -8.0
+
+[node name="MiscPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -12.0

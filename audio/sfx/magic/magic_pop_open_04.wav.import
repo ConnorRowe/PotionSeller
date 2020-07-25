@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/magic_pop_open_04.wav-76071ad7e232c7da2a647c38c518a5b0.sample"
+
+[deps]
+
+source_file="res://audio/sfx/magic/magic_pop_open_04.wav"
+dest_files=[ "res://.import/magic_pop_open_04.wav-76071ad7e232c7da2a647c38c518a5b0.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

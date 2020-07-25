@@ -77,8 +77,8 @@ debugger_agent/wait_timeout=50000
 
 [rendering]
 
+quality/intended_usage/framebuffer_allocation.mobile=2
 quality/2d/use_pixel_snap=true
-quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
 
 [tiled_importer]
