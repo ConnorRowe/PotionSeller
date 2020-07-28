@@ -1,10 +1,11 @@
 shader_type canvas_item;
 
-uniform float speed = 2f;
-uniform float scale = .1f;
+uniform float speed = .1f;
+uniform float scale = .2f;
 
 void vertex() {
-	vec2 offset = cos(TIME/speed) * vec2(VERTEX.y, 0) * scale;
+	float adjustedTime = (fract(TIME * speed) * 6f) - 3f;
+	vec2 offset = cos(adjustedTime) * vec2(VERTEX.y, 0) * scale;
 	
-	VERTEX = VERTEX + offset;
+	VERTEX = VERTEX - offset;
 }

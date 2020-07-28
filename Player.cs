@@ -22,6 +22,7 @@ public class Player : KinematicBody2D
     private AudioStreamPlayer _audioPlayer;
     private AudioStreamPlayer _footstepPlayer;
     private AudioStreamPlayer _miscPlayer;
+    private Particles2D _arcaneBurst;
 
     // Assets
     private Texture _runForwards;
@@ -84,7 +85,6 @@ public class Player : KinematicBody2D
         _arcaneParticle = GD.Load<ParticlesMaterial>("res://particle/ArcaneParticle.material");
         _worldEnvGlow = GD.Load<Shader>("res://shader/WorldEnvGlow.shader");
 
-
         // Load footstep sounds into an array
         for (int i = 0; i < _footstepSounds.Length; i++)
         {
@@ -114,6 +114,20 @@ public class Player : KinematicBody2D
             _magicPopSounds[i] = GD.Load<AudioStream>("res://audio/sfx/magic/magic_pop_open_0" + (i + 1).ToString() + ".wav");
         }
 
+        _arcaneBurst = new Particles2D()
+        {
+            Amount = 60,
+            Lifetime = 2f,
+            OneShot = true,
+            Explosiveness = 1f,
+            ProcessMaterial = _arcaneParticle,
+            Material = new ShaderMaterial()
+            {
+                Shader = _worldEnvGlow
+            }
+        };
+        ((ShaderMaterial)_arcaneBurst.Material).SetShaderParam("glowStrength", 10f);
+
         // Other setup
         Timer spriteAnimTimer = GetNode<Timer>("SpriteAnimateTimer");
         spriteAnimTimer.WaitTime = 1f / _SpriteFPS;
@@ -124,8 +138,6 @@ public class Player : KinematicBody2D
 
         _debugOverlay.TrackProperty(nameof(_inventory.Scale), _inventory, "Inventory Scale");
         _debugOverlay.TrackFunc(nameof(FloorPositionString), this, "Player Position");
-        _debugOverlay.TrackProperty("z_index", this, "ZIndex");
-        _debugOverlay.TrackFunc(nameof(GetTerrain), this, "Terrain");
 
         _inventory.Connect("ItemSlotSelected", this, nameof(InventorySlotSelected));
 
@@ -347,20 +359,8 @@ public class Player : KinematicBody2D
                     groundPlant.QueueFree();
 
                     // Build particle effect
-                    Particles2D newBurst = new Particles2D()
-                    {
-                        Amount = 60,
-                        Lifetime = 2f,
-                        OneShot = true,
-                        Explosiveness = 1f,
-                        Position = groundPlant.Position + new Vector2(8, -8),
-                        ProcessMaterial = _arcaneParticle,
-                        Material = new ShaderMaterial()
-                        {
-                            Shader = _worldEnvGlow
-                        }
-                    };
-                    ((ShaderMaterial)newBurst.Material).SetShaderParam("glowStrength", 10f);
+                    Particles2D newBurst = (Particles2D)_arcaneBurst.Duplicate();
+                    newBurst.Position = groundPlant.Position + new Vector2(8, -8);
                     GetParent().AddChild(newBurst);
 
                     // Remember to free it when it's done
@@ -373,11 +373,6 @@ public class Player : KinematicBody2D
                 }
             }
         }
-    }
-
-    private string GetTerrain()
-    {
-        return Gathering.TerrainToString(_gathering.GetTerrainAtPos(GlobalPosition + new Vector2(0f, 15f)));
     }
 
     private void PlayFootstep(Gathering.Terrain terrain)

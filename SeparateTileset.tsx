@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.4" tiledversion="1.4.1" name="SeparateTileset" tilewidth="16" tileheight="16" tilecount="21" columns="0">
+<tileset version="1.4" tiledversion="1.4.1" name="SeparateTileset" tilewidth="16" tileheight="16" tilecount="30" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
@@ -134,5 +134,59 @@
     <polygon points="0,0 16,0 16,16 0,16"/>
    </object>
   </objectgroup>
+ </tile>
+ <tile id="21">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_22.png"/>
+ </tile>
+ <tile id="22">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_23.png"/>
+ </tile>
+ <tile id="23">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_24.png"/>
+ </tile>
+ <tile id="24">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_25.png"/>
+ </tile>
+ <tile id="25">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_26.png"/>
+ </tile>
+ <tile id="26">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_27.png"/>
+ </tile>
+ <tile id="27">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_28.png"/>
+ </tile>
+ <tile id="28">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_29.png"/>
+ </tile>
+ <tile id="29">
+  <properties>
+   <property name="material" value="grass"/>
+  </properties>
+  <image width="16" height="16" source="textures/terrain/terrain_30.png"/>
  </tile>
 </tileset>

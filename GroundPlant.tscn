@@ -1,19 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://textures/fly_agaric.png" type="Texture" id=1]
 [ext_resource path="res://GroundPlant.cs" type="Script" id=2]
 [ext_resource path="res://textures/Shadow_small.png" type="Texture" id=3]
+[ext_resource path="res://textures/normal/fly_agaric_n.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
 
 [node name="GroundPlant" type="Sprite"]
 texture = ExtResource( 1 )
+normal_map = ExtResource( 4 )
 centered = false
 offset = Vector2( 0, -16 )
 script = ExtResource( 2 )
 
 [node name="Area" type="Area2D" parent="."]
+input_pickable = false
+monitoring = false
 
 [node name="Collision" type="CollisionShape2D" parent="Area"]
 position = Vector2( 8, -8 )

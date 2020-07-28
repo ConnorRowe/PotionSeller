@@ -56,6 +56,16 @@ public class Item : Reference
     public Color PotionColour { get { return _potionColour; } }
     public string Description { get { return _description; } }
 
+    public Item()
+    {
+        _name = string.Empty;
+        _itemType = ItemType.Reagent;
+        _rarity = Rarity.Common;
+        _iconTex = null;
+        _normalMap = null;
+        _potionColour = Colors.AliceBlue;
+        _description = string.Empty;
+    }
 
     public Item(string name, ItemType itemType, Rarity rarity, string iconTexFileName, Color potionColour, string description)
     {

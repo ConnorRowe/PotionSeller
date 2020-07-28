@@ -7,7 +7,7 @@
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
-shader_param/speed = 1.0
+shader_param/speed = 0.1
 shader_param/scale = 0.2
 
 [sub_resource type="RectangleShape2D" id=2]
