@@ -61,6 +61,16 @@ public class WavyGrass : Node2D, IInteractable
     public bool Interact(Player player)
     {
         BodyEntered(null);
-        return true;
+        return false;
+    }
+
+    public bool HasInteractParticle()
+    {
+        return false;
+    }
+
+    public Particles2D GetInteractParticles()
+    {
+        return null;
     }
 }

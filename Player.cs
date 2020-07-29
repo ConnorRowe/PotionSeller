@@ -22,7 +22,6 @@ public class Player : KinematicBody2D
     private AudioStreamPlayer _audioPlayer;
     private AudioStreamPlayer _footstepPlayer;
     private AudioStreamPlayer _miscPlayer;
-    private Particles2D _arcaneBurst;
 
     // Assets
     private Texture _runForwards;
@@ -34,8 +33,6 @@ public class Player : KinematicBody2D
     private AudioStreamOGGVorbis _forestSong;
     private AudioStream[] _footstepSounds = new AudioStream[12];
     private AudioStream[] _magicPopSounds = new AudioStream[5];
-    private ParticlesMaterial _arcaneParticle;
-    private Shader _worldEnvGlow;
 
     // Gameplay vars
     private const float _MaxSpeed = 70f;
@@ -45,7 +42,7 @@ public class Player : KinematicBody2D
     private bool _playerIsMoving = false;
 
     private System.Collections.Generic.List<Item.ItemStack> _invItems = new System.Collections.Generic.List<Item.ItemStack>();
-    private System.Collections.Generic.List<Particles2D> _arcaneBursts = new System.Collections.Generic.List<Particles2D>();
+    private System.Collections.Generic.List<Particles2D> _interactParticles = new System.Collections.Generic.List<Particles2D>();
 
     public Direction PlayerDirection
     {
@@ -82,8 +79,6 @@ public class Player : KinematicBody2D
         _runBackwardsNormal = GD.Load<Texture>("res://textures/normal/Player_run_backwards_n.png");
         _runRightNormal = GD.Load<Texture>("res://textures/normal/Player_run_right_n.png");
         _forestSong = GD.Load<AudioStreamOGGVorbis>("res://audio/music/enchanted_forest_longer.ogg");
-        _arcaneParticle = GD.Load<ParticlesMaterial>("res://particle/ArcaneParticle.material");
-        _worldEnvGlow = GD.Load<Shader>("res://shader/WorldEnvGlow.shader");
 
         // Load footstep sounds into an array
         for (int i = 0; i < _footstepSounds.Length; i++)
@@ -113,20 +108,6 @@ public class Player : KinematicBody2D
         {
             _magicPopSounds[i] = GD.Load<AudioStream>("res://audio/sfx/magic/magic_pop_open_0" + (i + 1).ToString() + ".wav");
         }
-
-        _arcaneBurst = new Particles2D()
-        {
-            Amount = 60,
-            Lifetime = 2f,
-            OneShot = true,
-            Explosiveness = 1f,
-            ProcessMaterial = _arcaneParticle,
-            Material = new ShaderMaterial()
-            {
-                Shader = _worldEnvGlow
-            }
-        };
-        ((ShaderMaterial)_arcaneBurst.Material).SetShaderParam("glowStrength", 10f);
 
         // Other setup
         Timer spriteAnimTimer = GetNode<Timer>("SpriteAnimateTimer");
@@ -159,16 +140,17 @@ public class Player : KinematicBody2D
         {
             //Moving
             ApplyMovement(axis * _Acceleration * delta);
+
+            bool vertical = Mathf.Abs(axis.y) > Mathf.Abs(axis.x);
+            bool positive = Mathf.Sign(vertical ? axis.y : axis.x) > 0f;
+
+            PlayerDirection = vertical ? (positive ? Direction.Down : Direction.Up) : (positive ? Direction.Right : Direction.Left);
         }
 
         _motion = MoveAndSlide(_motion);
 
         if (_motion.Length() > 0f)
         {
-            bool vertical = Mathf.Abs(_motion.y) > Mathf.Abs(_motion.x);
-            bool positive = Mathf.Sign(vertical ? _motion.y : _motion.x) > 0f;
-
-            PlayerDirection = vertical ? (positive ? Direction.Down : Direction.Up) : (positive ? Direction.Right : Direction.Left);
             _playerIsMoving = true;
         }
         else
@@ -187,8 +169,11 @@ public class Player : KinematicBody2D
         {
             if ((KeyList)keyEvent.Scancode == KeyList.T)
             {
-                PickupItem(new Item.ItemStack(Items.ORPIMENT, 1));
-                _inventory.Update();
+                BouncingItem bounceTest = (BouncingItem)GD.Load<PackedScene>("res://BouncingItem.tscn").Instance();
+                bounceTest.Position = Position;
+                bounceTest.Initialise(new Vector2(15f, 0f), -60f);
+
+                GetParent().AddChild(bounceTest);
             }
         }
 
@@ -347,29 +332,34 @@ public class Player : KinematicBody2D
         {
             // Has collided
 
-            if ((result["collider"]) is CollisionObject2D col && col.GetParent() is IInteractable interactable)
-            {
-                interactable.Interact(this);
+            IInteractable interactable = null;
 
-                if (interactable is GroundPlant || interactable is WavyGrass)
+            if ((result["collider"]) is CollisionObject2D col && col.GetParent() is IInteractable interactableCol)
+                interactable = interactableCol;
+            else if ((result["collider"]) is IInteractable interactableObj)
+                interactable = interactableObj;
+
+            if (interactable != null)
+            {
+                if (interactable is WavyGrass || interactable is ShakePlant)
                     PlayFootstep(Gathering.Terrain.Grass);
 
-                if (interactable is GroundPlant groundPlant)
+                if (interactable.HasInteractParticle())
                 {
-                    groundPlant.QueueFree();
+                    Particles2D newParticle = interactable.GetInteractParticles();
+                    newParticle.Position = ((Node2D)interactable).Position + new Vector2(8, -8);
+                    GetParent().AddChild(newParticle);
+                    _interactParticles.Add(newParticle);
+                    GetTree().CreateTimer(2.0f).Connect("timeout", this, nameof(PopInteractParticle));
+                }
 
-                    // Build particle effect
-                    Particles2D newBurst = (Particles2D)_arcaneBurst.Duplicate();
-                    newBurst.Position = groundPlant.Position + new Vector2(8, -8);
-                    GetParent().AddChild(newBurst);
-
-                    // Remember to free it when it's done
-                    _arcaneBursts.Add(newBurst);
-                    GetTree().CreateTimer(2f).Connect("timeout", this, nameof(PopArcaneBurst));
-
+                if (interactable.Interact(this))
+                {
                     // Play sound
                     _miscPlayer.Stream = _magicPopSounds[GD.Randi() % 5];
                     _miscPlayer.Play();
+
+                    ((Node2D)interactable).QueueFree();
                 }
             }
         }
@@ -400,9 +390,9 @@ public class Player : KinematicBody2D
         _footstepPlayer.Play();
     }
 
-    private void PopArcaneBurst()
+    private void PopInteractParticle()
     {
-        _arcaneBursts[0].QueueFree();
-        _arcaneBursts.RemoveAt(0);
+        _interactParticles[0].QueueFree();
+        _interactParticles.RemoveAt(0);
     }
 }

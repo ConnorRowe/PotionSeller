@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://shader/Swaying.shader" type="Shader" id=1]
 [ext_resource path="res://textures/conifer_foliage.png" type="Texture" id=2]
 [ext_resource path="res://textures/normal/conifer_trunk_n.png" type="Texture" id=3]
 [ext_resource path="res://textures/normal/conifer_foliage_n.png" type="Texture" id=4]
 [ext_resource path="res://textures/conifer_trunk.png" type="Texture" id=5]
+[ext_resource path="res://textures/tree_berries.png" type="Texture" id=6]
+[ext_resource path="res://ShakePlant.cs" type="Script" id=7]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
@@ -15,6 +17,9 @@ shader_param/scale = 0.1
 radius = 3.84915
 
 [node name="Tree" type="StaticBody2D"]
+script = ExtResource( 7 )
+_nodeToShakePath = NodePath("Foliage")
+_nodeToHidePath = NodePath("Foliage/Bewwies")
 
 [node name="Trunk" type="Sprite" parent="."]
 texture = ExtResource( 5 )
@@ -26,6 +31,12 @@ region_rect = Rect2( 0, 16, 48, 48 )
 [node name="Foliage" type="Sprite" parent="."]
 material = SubResource( 1 )
 texture = ExtResource( 2 )
+normal_map = ExtResource( 4 )
+offset = Vector2( 0, -29 )
+
+[node name="Bewwies" type="Sprite" parent="Foliage"]
+material = SubResource( 1 )
+texture = ExtResource( 6 )
 normal_map = ExtResource( 4 )
 offset = Vector2( 0, -29 )
 

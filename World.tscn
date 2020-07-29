@@ -67,6 +67,15 @@ position = Vector2( 640, 320 )
 [node name="GroundPlant7" parent="." instance=ExtResource( 8 )]
 position = Vector2( 512, 432 )
 
+[node name="GroundPlant8" parent="." instance=ExtResource( 8 )]
+position = Vector2( 96, 160 )
+
+[node name="GroundPlant9" parent="." instance=ExtResource( 8 )]
+position = Vector2( 32, 160 )
+
+[node name="GroundPlant10" parent="." instance=ExtResource( 8 )]
+position = Vector2( 64, 64 )
+
 [node name="WavyGrass" parent="." instance=ExtResource( 9 )]
 position = Vector2( 336, 160 )
 
@@ -113,8 +122,16 @@ position = Vector2( 158.612, 261.523 )
 position = Vector2( 164.498, 271.637 )
 
 [node name="Tree" parent="." instance=ExtResource( 11 )]
-position = Vector2( 522, 215 )
+position = Vector2( 528, 215 )
 z_index = 215
+
+[node name="Tree2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 104, 136 )
+z_index = 136
+
+[node name="Tree3" parent="." instance=ExtResource( 11 )]
+position = Vector2( 352, 272 )
+z_index = 272
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 12 )

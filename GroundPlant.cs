@@ -3,6 +3,8 @@ using System;
 
 public class GroundPlant : Sprite, IInteractable
 {
+    private PackedScene _interactParticle;
+
     private Item.ItemStack _itemStack;
     private System.Collections.Generic.List<Item> possibleItems = new System.Collections.Generic.List<Item>(new Item[] { Items.ELDERBERRIES, Items.FLY_AGARIC, Items.HOLLY_BERRIES, Items.ORPIMENT, Items.VEILED_STINKHORN });
 
@@ -12,6 +14,7 @@ public class GroundPlant : Sprite, IInteractable
     {
         GD.Randomize();
         ItemStack = new Item.ItemStack(possibleItems[(int)(GD.Randi() % (uint)possibleItems.Count)], 1);
+        _interactParticle = GD.Load<PackedScene>("res://particle/ArcaneBurst.tscn");
 
         ZIndex = Mathf.FloorToInt(Position.y);
     }
@@ -30,5 +33,15 @@ public class GroundPlant : Sprite, IInteractable
         player.PickupItem(ItemStack);
 
         return true;
+    }
+
+    public bool HasInteractParticle()
+    {
+        return true;
+    }
+
+    public Particles2D GetInteractParticles()
+    {
+        return (Particles2D)_interactParticle.Instance();
     }
 }
